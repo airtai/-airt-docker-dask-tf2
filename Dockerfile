@@ -13,7 +13,7 @@ RUN apt-mark hold libcudnn7 cuda-compat-10-1
 # RUN apt upgrade --assume-yes --fix-missing
 
 # snappy compression is needed by Parquet and graphviz for visualization of execution graphs by Dask
-RUN apt install --assume-yes libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev libncursesw5-dev git zip wkhtmltopdf wget
+RUN apt install --assume-yes libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev libncursesw5-dev git zip wget
 # ADD requirements.txt .
 ADD top_level_requirements.txt .
 
@@ -28,7 +28,7 @@ RUN ls -l
 RUN pip3 install jupyterthemes-0.20.0-py2.py3-none-any.whl
 
 # customize your jupyter notebook
-ADD zaba-logo-neg.png .
+ADD airt-neg-trans.png .
 RUN jt -t zaba -cellw 95% -N -T --logo airt-neg-trans.png
 
 # customize bash welcome message
