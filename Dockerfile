@@ -29,7 +29,7 @@ RUN pip3 install jupyterthemes-0.20.0-py2.py3-none-any.whl
 
 # customize your jupyter notebook
 ADD airt-neg-trans.png .
-RUN jt -t zaba -cellw 95% -N -T --logo airt-neg-trans.png
+RUN jt -t airt -cellw 90% -N -T --logo airt-neg-trans.png
 
 # customize bash welcome message
 ADD bash.bashrc /etc
