@@ -1,0 +1,16 @@
+image: guss77/dind-awscli
+
+services:
+  - docker:dind
+
+stages:
+  - build image
+
+docker build:
+  stage: build image
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE:latest --build-arg ACCESS_REP_TOKEN -t $CI_REGISTRY_IMAGE:latest -t $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:latest
+    - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHA
+
