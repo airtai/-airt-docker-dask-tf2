@@ -1,2 +1,1 @@
-# airt-docker-dask-tf2
-
+ZABA Docker container with all tools needed for AI projects including TensorFlow 2.0, Pandas etc.
