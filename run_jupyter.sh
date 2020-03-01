@@ -43,10 +43,10 @@ echo AIRT_PROJECT variable set to $AIRT_PROJECT
 {
     which nvidia-smi &&
     nvidia-smi -L &&
-    echo WARNING: Running docker image with all GPU-s &&
+    echo INFO: Running docker image with all GPU-s &&
     docker run --gpus all --rm -p $AIRT_JUPYTER_PORT:8888 -p $AIRT_TB_PORT:6006 -p $AIRT_DASK_PORT:8787 -v $AIRT_DATA:/work/data -v $AIRT_PROJECT:/tf/project $AIRT_DOCKER
 } || {
-    echo INFO: INFO: Running docker image without GPU-s
+    echo WARNING: Running docker image without GPU-s
     docker run --rm -p $AIRT_JUPYTER_PORT:8888 -p $AIRT_TB_PORT:6006 -p $AIRT_DASK_PORT:8787 -v $AIRT_DATA:/work/data -v $AIRT_PROJECT:/tf/project $AIRT_DOCKER
 }
 
