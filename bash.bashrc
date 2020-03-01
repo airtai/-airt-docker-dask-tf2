@@ -20,7 +20,7 @@ alias grep="grep --color=auto"
 alias ls="ls --color=auto"
 
 
-echo -e "\e[1;41m";  figlet -w 120 "     airt.ai "
+echo -e "\e[1;41m";  figlet -w 120 "airt.ai docker"
 
 echo -e "\e[0;33m"
 
