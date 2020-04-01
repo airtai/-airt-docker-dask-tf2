@@ -12,7 +12,7 @@ https://gitlab.com/airt.ai/airt-docker-dask-tf2/container_registry
 The easiest way to test the docker on your local machine is to clone the repository, login into contain repository and then start `run_jupyter.sh` script as follows:
 
 ```
-$ docker clone git@gitlab.com:airt.ai/airt-docker-dask-tf2.git
+$ git clone git@gitlab.com:airt.ai/airt-docker-dask-tf2.git
 $ cd airt-docker-dask-tf2
 $ docker login registry.gitlab.com
 $ ./run_jupyter
