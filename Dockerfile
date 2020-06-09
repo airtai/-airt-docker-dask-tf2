@@ -45,6 +45,7 @@ RUN curl -L https://get.oh-my.fish > install_omf
 RUN chmod 777 install_omf
 RUN ./install_omf --noninteractive
 RUN rm install_omf
+RUN echo omf install bobthefish | fish
 ADD config.fish /root/.config/fish/config.fish
 
 
