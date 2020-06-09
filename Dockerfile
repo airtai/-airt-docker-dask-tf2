@@ -1,8 +1,7 @@
-FROM tensorflow/tensorflow:2.1.0-gpu-py3-jupyter
+FROM tensorflow/tensorflow:2.2.0-gpu-jupyter
 
 # ACCESS TOKEN
 ARG ACCESS_REP_TOKEN 
-# ENV ACCESS_REP_TOKEN=$ACCESS_REP_TOKEN 
 
 # needed to suppress tons of debconf messages
 ENV DEBIAN_FRONTEND noninteractive
@@ -13,7 +12,7 @@ RUN apt-mark hold libcudnn7 cuda-compat-10-1
 # RUN apt upgrade --assume-yes --fix-missing
 
 # snappy compression is needed by Parquet and graphviz for visualization of execution graphs by Dask
-RUN apt install --assume-yes libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev libncursesw5-dev git zip wget nano
+RUN apt install --assume-yes libsnappy-dev vim figlet fish htop tmux cmake libncurses5-dev libncursesw5-dev git zip wget nano make
 
 # customize bash welcome message
 ADD bash.bashrc /etc
@@ -44,21 +43,27 @@ RUN rm jupyterthemes-0.20.0-py2.py3-none-any.whl top_level_requirements.txt
 
 # Oh my fish
 RUN curl -L https://get.oh-my.fish > install_omf
+RUN curl -L https://get.oh-my.fish > install_omf
 RUN chmod 777 install_omf
 RUN ./install_omf --noninteractive
 RUN rm install_omf
 RUN echo omf install bobthefish | fish
-RUN echo set -Ux theme_powerline_fonts no | fish
 RUN echo omf theme bobthefish | fish
+ADD config.fish /root/.config/fish/config.fish
 
-# we will run Docker in user mode so everything in the root directory must be accessible
+
+# We create a user and run everything as that user later
+#RUN groupadd -g 1002 skymon
+#RUN useradd -s /usr/bin/fish -u 1006 -g skymon skymonpia
 RUN chmod -R 777 /root
+#RUN chown -R skymonpia:skymon /root
+
 
 # needed for shell to operate properly
-ENV USER skymon
+ENV USER airt
 ENV HOME /root
 
 # default shell is fish
 ENV SHELL /usr/bin/fish
-SHELL ["/usr/bin/fish", ""]
+SHELL ["/bin/bash", ""]
 

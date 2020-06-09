@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export AIRT_DOCKER=registry.gitlab.com/airt.ai/airt-docker-dask-tf2
+export AIRT_DOCKER=registry.gitlab.com/airt.ai/airt-docker-dask-tf2:latest
 
 if test -z "$AIRT_JUPYTER_PORT"
 then
@@ -40,14 +40,13 @@ then
 fi
 echo AIRT_PROJECT variable set to $AIRT_PROJECT
 
-{
-    which nvidia-smi &&
-    nvidia-smi -L &&
-    echo INFO: Running docker image with all GPU-s &&
-    docker run --gpus all -u $(id -u):$(id -g) -e JUPYTER_CONFIG_DIR=/root/.jupyter --rm -p $AIRT_JUPYTER_PORT:8888 -p $AIRT_TB_PORT:6006 -p $AIRT_DASK_PORT:8787 -v $AIRT_DATA:/work/data -v $AIRT_PROJECT:/tf/project $AIRT_DOCKER
-} || {
-    echo WARNING: Running docker image without GPU-s
-    docker run -u $(id -u):$(id -g) -e JUPYTER_CONFIG_DIR=/root/.jupyter --rm -p $AIRT_JUPYTER_PORT:8888 -p $AIRT_TB_PORT:6006 -p $AIRT_DASK_PORT:8787 -v $AIRT_DATA:/work/data -v $AIRT_PROJECT:/tf/project $AIRT_DOCKER
-}
+echo INFO: Running docker image with all GPU-s
+nvidia-smi -L
+
+echo Using $AIRT_DOCKER
+
+docker image ls $AIRT_DOCKER
+
+docker run --gpus all -u $(id -u):$(id -g) -e JUPYTER_CONFIG_DIR=/root/.jupyter --rm -p $AIRT_JUPYTER_PORT:8888 -p $AIRT_TB_PORT:6006 -p $AIRT_DASK_PORT:8787 -v $AIRT_DATA:/work/data -v $AIRT_PROJECT:/tf/project $AIRT_DOCKER
 
 
