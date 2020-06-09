@@ -26,7 +26,6 @@ ADD top_level_requirements.txt .
 RUN pip3 install -r top_level_requirements.txt
 
 # install jupyter theme with airt theme
-RUN ls -l
 RUN echo curl -L --header Private-Token:$ACCESS_REP_TOKEN  https://gitlab.com/api/v4/projects/15104297/jobs/artifacts/master/raw/dist/jupyterthemes-0.20.0-py2.py3-none-any.whl?job=wheel_build -o jupyterthemes-0.20.0-py2.py3-none-any.whl
 RUN curl -L --header Private-Token:$ACCESS_REP_TOKEN  https://gitlab.com/api/v4/projects/15104297/jobs/artifacts/master/raw/dist/jupyterthemes-0.20.0-py2.py3-none-any.whl?job=wheel_build -o jupyterthemes-0.20.0-py2.py3-none-any.whl
 RUN ls -l
@@ -43,12 +42,9 @@ RUN rm jupyterthemes-0.20.0-py2.py3-none-any.whl top_level_requirements.txt
 
 # Oh my fish
 RUN curl -L https://get.oh-my.fish > install_omf
-RUN curl -L https://get.oh-my.fish > install_omf
 RUN chmod 777 install_omf
 RUN ./install_omf --noninteractive
 RUN rm install_omf
-RUN echo omf install bobthefish | fish
-RUN echo omf theme bobthefish | fish
 ADD config.fish /root/.config/fish/config.fish
 
 
