@@ -40,13 +40,19 @@ then
 fi
 echo AIRT_PROJECT variable set to $AIRT_PROJECT
 
-echo INFO: Running docker image with all GPU-s
-nvidia-smi -L
-
 echo Using $AIRT_DOCKER
-
 docker image ls $AIRT_DOCKER
 
-docker run --gpus all -u $(id -u):$(id -g) -e JUPYTER_CONFIG_DIR=/root/.jupyter --rm -p $AIRT_JUPYTER_PORT:8888 -p $AIRT_TB_PORT:6006 -p $AIRT_DASK_PORT:8787 -v $AIRT_DATA:/work/data -v $AIRT_PROJECT:/tf/project $AIRT_DOCKER
+if `which nvidi-smi`
+then
+	echo INFO: Running docker image with all GPU-s
+	nvidia-smi -L
+	export GPU_PARAMS="--gpus all"
+else
+	echo INFO: Running docker image without GPU-s
+	export GPU_PARAMS=""
+fi
+
+docker run $GPU_PARAMS -u $(id -u):$(id -g) -e JUPYTER_CONFIG_DIR=/root/.jupyter --rm -p $AIRT_JUPYTER_PORT:8888 -p $AIRT_TB_PORT:6006 -p $AIRT_DASK_PORT:8787 -v $AIRT_DATA:/work/data -v $AIRT_PROJECT:/tf/project $AIRT_DOCKER
 
 
