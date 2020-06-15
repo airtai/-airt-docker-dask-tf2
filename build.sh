@@ -1,10 +1,10 @@
 #!/bin/bash
 export AIRT_DOCKER=registry.gitlab.com/airt.ai/airt-docker-dask-tf2
 
-if test -z "ACCESS_REP_TOKEN"
+if test -z "$ACCESS_REP_TOKEN"
 then
 	echo ERROR: ACCESS_REP_TOKEN must be defined, exiting
-	return -1
+	exit -1
 else
 	echo Building $AIRT_DOCKER
 
