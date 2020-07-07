@@ -1,3 +1,3 @@
-set -Ux theme_powerline_fonts no
-set -Ux PATH . $PATH
+set -gx theme_powerline_fonts no
+set -gx PATH . $PATH
 
