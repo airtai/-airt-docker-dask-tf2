@@ -32,9 +32,9 @@ RUN ls -l
 RUN pip3 install jupyterthemes-0.20.0-py2.py3-none-any.whl
 
 # customize your jupyter notebook
-ADD airt-neg-trans.png .
-RUN jt -t airt -cellw 90% -N -T --logo airt-neg-trans.png
-RUN rm airt-neg-trans.png
+ADD airt-neg-trans-small.png .
+RUN jt -t airt -cellw 90% -N -T --logo airt-neg-trans-small.png
+RUN rm airt-neg-trans-small.png
 
 # cleanup
 RUN ls -al
@@ -62,5 +62,5 @@ ENV HOME /root
 
 # default shell is fish
 ENV SHELL /usr/bin/fish
-SHELL ["/bin/bash", ""]
+SHELL ["/bin/fish", ""]
 
