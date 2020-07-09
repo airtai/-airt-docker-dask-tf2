@@ -54,5 +54,5 @@ ENV HOME /root
 
 # default shell is fish
 ENV SHELL /usr/bin/fish
-SHELL ["/usr/bin/fish", ""]
+SHELL ["/usr/bin/fish", "-c"]
 
