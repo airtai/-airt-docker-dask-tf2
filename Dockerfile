@@ -1,7 +1,7 @@
 FROM tensorflow/tensorflow:2.2.0-gpu-jupyter
 
-# ACCESS TOKEN
-ARG ACCESS_REP_TOKEN 
+# Token to authenticate for jt
+ARG CI_JOB_TOKEN
 
 # needed to suppress tons of debconf messages
 ENV DEBIAN_FRONTEND noninteractive
@@ -26,7 +26,7 @@ ADD top_level_requirements.txt .
 RUN pip3 install -r top_level_requirements.txt
 
 # install jupyter theme with airt theme
-RUN pip3 install git+https://oauth2:${ACCESS_REP_TOKEN}@gitlab.com/airt.ai/jupyter-themes.git
+RUN pip3 install git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/airt.ai/jupyter-themes.git
 
 # customize your jupyter notebook
 ADD airt-neg-trans-small.png .

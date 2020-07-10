@@ -16,8 +16,8 @@ docker_build_push:
     - master
     - dev
   script:
-    - docker build --no-cache --build-arg ACCESS_REP_TOKEN -t $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH .
-    - if [ $CI_COMMIT_BRANCH = "master" ]; then docker build --build-arg ACCESS_REP_TOKEN -t $CI_REGISTRY_IMAGE:latest .; fi
+    - docker build --no-cache --build-arg CI_JOB_TOKEN -t $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH .
+    - if [ $CI_COMMIT_BRANCH = "master" ]; then docker build --build-arg CI_JOB_TOKEN -t $CI_REGISTRY_IMAGE:latest .; fi
     - docker push $CI_REGISTRY_IMAGE
 
 docker_build:
@@ -26,4 +26,4 @@ docker_build:
     - master
     - dev
   script:
-    - docker build --no-cache --build-arg ACCESS_REP_TOKEN -t $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH .
+    - docker build --no-cache --build-arg CI_JOB_TOKEN -t $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH .
