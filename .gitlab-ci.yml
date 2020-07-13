@@ -1,3 +1,8 @@
+# Project IDs and Project URLs
+# This is to keep track of which project id points to which project for downstream triggering
+# 1. 17231350 - https://gitlab.com/airt.ai/mercury/docker-dask-tf2
+# 2. 17258256 - https://gitlab.com/predictions-technology/ads/docker-dask-tf2/
+
 image: docker:latest
 
 services:
