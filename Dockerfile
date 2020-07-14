@@ -13,7 +13,9 @@ RUN apt-mark hold libcudnn7 cuda-compat-10-1
 # RUN apt upgrade --assume-yes --fix-missing
 
 # snappy compression is needed by Parquet and graphviz for visualization of execution graphs by Dask
-RUN apt install --assume-yes libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev libncursesw5-dev git zip wget nano make ssh-client less sudo
+RUN apt install --assume-yes libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
+    libncursesw5-dev git zip wget nano make ssh-client less sudo \
+    openssh-client
 
 # customize bash welcome message
 ADD bash.bashrc /etc
@@ -37,6 +39,10 @@ ADD airt-neg-trans-small.png .
 RUN jt -t airt -cellw 90% -N -T --logo airt-neg-trans-small.png
 RUN rm airt-neg-trans-small.png
 
+# Install and enable black python formatter for notebooks
+RUN jupyter nbextension install https://github.com/drillan/jupyter-black/archive/master.zip
+RUN jupyter nbextension enable jupyter-black-master/jupyter-black
+
 # cleanup
 RUN ls -al
 RUN rm top_level_requirements.txt
@@ -55,6 +61,9 @@ RUN chmod -R 777 /root
 # needed for shell to operate properly
 ENV USER airt
 ENV HOME /root
+
+RUN mkdir -p /root/.local/bin
+RUN chmod 777 /root/.local/bin
 
 # default shell is fish
 ENV SHELL /usr/bin/fish
