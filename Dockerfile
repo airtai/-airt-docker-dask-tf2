@@ -62,6 +62,9 @@ RUN chmod -R 777 /root
 ENV USER airt
 ENV HOME /root
 
+RUN mkdir -p /root/.local/bin
+RUN chmod 777 /root/.local/bin
+
 # default shell is fish
 ENV SHELL /usr/bin/fish
 SHELL ["/usr/bin/fish", "-c"]
