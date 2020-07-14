@@ -13,7 +13,9 @@ RUN apt-mark hold libcudnn7 cuda-compat-10-1
 # RUN apt upgrade --assume-yes --fix-missing
 
 # snappy compression is needed by Parquet and graphviz for visualization of execution graphs by Dask
-RUN apt install --assume-yes libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev libncursesw5-dev git zip wget nano make ssh-client less sudo
+RUN apt install --assume-yes libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
+    libncursesw5-dev git zip wget nano make ssh-client less sudo \
+    openssh-client
 
 # customize bash welcome message
 ADD bash.bashrc /etc
@@ -36,6 +38,10 @@ RUN if [ -n "$ACCESS_REP_TOKEN" ] ; \
 ADD airt-neg-trans-small.png .
 RUN jt -t airt -cellw 90% -N -T --logo airt-neg-trans-small.png
 RUN rm airt-neg-trans-small.png
+
+# Install and enable black python formatter for notebooks
+RUN jupyter nbextension install https://github.com/drillan/jupyter-black/archive/master.zip
+RUN jupyter nbextension enable jupyter-black-master/jupyter-black
 
 # cleanup
 RUN ls -al

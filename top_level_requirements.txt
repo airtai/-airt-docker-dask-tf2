@@ -19,4 +19,4 @@ typer>=0.3.0
 names>=0.3.0
 RandomWords>=0.3.0
 awscli>=1.18.97
-
+black>=19.10b0

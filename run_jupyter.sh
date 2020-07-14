@@ -43,7 +43,7 @@ echo AIRT_PROJECT variable set to $AIRT_PROJECT
 echo Using $AIRT_DOCKER
 docker image ls $AIRT_DOCKER
 
-if `which nvidi-smi`
+if `which nvidia-smi`
 then
 	echo INFO: Running docker image with all GPU-s
 	nvidia-smi -L
