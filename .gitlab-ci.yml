@@ -2,6 +2,7 @@
 # This is to keep track of which project id points to which project for downstream triggering
 # 1. 17231350 - https://gitlab.com/airt.ai/mercury/docker-dask-tf2
 # 2. 17258256 - https://gitlab.com/predictions-technology/ads/docker-dask-tf2/
+# 3. 19941057 - https://gitlab.com/airt.ai/zaba/docker-dask-tf2
 
 image: docker:latest
 
@@ -43,4 +44,4 @@ trigger_downstream:
     - apt update && apt install -y curl git
   script:
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/airt.ai/downstream-trigger.git
-    - ./downstream-trigger/downstream.sh https://gitlab.com/api/v4/projects/ $CI_JOB_TOKEN $CI_COMMIT_BRANCH 17231350 17258256
+    - ./downstream-trigger/downstream.sh https://gitlab.com/api/v4/projects/ $CI_JOB_TOKEN $CI_COMMIT_BRANCH 17231350 17258256 19941057
