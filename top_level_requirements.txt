@@ -5,7 +5,7 @@ python-snappy>=0.5.4
 pyarrow>=1.0.0
 pytest>=6.0.1
 pytest-cov>=2.10.1
-panel==0.10.0a18
+panel==0.10.0a24
 dask[complete]==2.22.0
 graphviz>=0.14.1
 scikit-learn>=0.23.1
