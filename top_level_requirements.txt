@@ -23,5 +23,6 @@ black>=19.10b0
 PyYAML>=5.3.1
 clevercsv>=0.6.3
 chardet>=3.0.4
+cchardet>=2.1.6
 holoviews[recommended]>=1.13.3
 
