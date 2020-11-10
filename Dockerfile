@@ -15,7 +15,7 @@ RUN apt-mark hold libcudnn7 cuda-compat-10-1
 # snappy compression is needed by Parquet and graphviz for visualization of execution graphs by Dask
 RUN apt install --assume-yes libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
     libncursesw5-dev git zip wget nano make ssh-client less sudo \
-    openssh-client
+    openssh-client alien libaio-dev
 
 # customize bash welcome message
 ADD bash.bashrc /etc
@@ -43,9 +43,13 @@ RUN rm airt-neg-trans-small.png
 RUN jupyter nbextension install https://github.com/drillan/jupyter-black/archive/master.zip
 RUN jupyter nbextension enable jupyter-black-master/jupyter-black
 
+# Install oracle client library
+RUN wget -O oracle-client-19.9.rpm https://download.oracle.com/otn_software/linux/instantclient/199000/oracle-instantclient19.9-basic-19.9.0.0.0-1.x86_64.rpm
+RUN alien -i --scripts oracle-client-19.9.rpm
+
 # cleanup
 RUN ls -al
-RUN rm top_level_requirements.txt
+RUN rm top_level_requirements.txt oracle-client-19.9.rpm
 
 # Oh my fish
 RUN curl -L https://get.oh-my.fish > install_omf
@@ -68,4 +72,3 @@ RUN chmod 777 /root/.local/bin
 # default shell is fish
 ENV SHELL /usr/bin/fish
 SHELL ["/usr/bin/fish", "-c"]
-
