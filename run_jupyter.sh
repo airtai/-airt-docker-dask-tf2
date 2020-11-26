@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export AIRT_DOCKER=registry.gitlab.com/airt.ai/airt-docker-dask-tf2:latest
+export AIRT_DOCKER=registry.gitlab.com/airt.ai/airt-docker-dask-tf2:dev
 
 if test -z "$AIRT_JUPYTER_PORT"; then
       echo 'AIRT_JUPYTER_PORT variable not set, setting to 8888'
