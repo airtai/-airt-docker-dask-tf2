@@ -15,7 +15,7 @@ RUN apt-mark hold libcudnn7 cuda-compat-10-1
 # snappy compression is needed by Parquet and graphviz for visualization of execution graphs by Dask
 RUN apt install --assume-yes libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
     libncursesw5-dev git zip wget nano make ssh-client less sudo \
-    openssh-client alien libaio-dev
+    openssh-client alien libaio-dev firefox-geckodriver
 
 # customize bash welcome message
 ADD bash.bashrc /etc
