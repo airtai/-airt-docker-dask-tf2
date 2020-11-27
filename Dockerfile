@@ -7,15 +7,19 @@ ARG ACCESS_REP_TOKEN
 # needed to suppress tons of debconf messages
 ENV DEBIAN_FRONTEND noninteractive
 
+# needed for TF serving
+RUN echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt stable tensorflow-model-server tensorflow-model-server-universal" | tee /etc/apt/sources.list.d/tensorflow-serving.list && curl https://storage.googleapis.com/tensorflow-serving-apt/tensorflow-serving.release.pub.gpg | apt-key add -
+
 # update system
 RUN apt update --fix-missing
 RUN apt-mark hold libcudnn7 cuda-compat-10-1
 # RUN apt upgrade --assume-yes --fix-missing
 
+
 # snappy compression is needed by Parquet and graphviz for visualization of execution graphs by Dask
 RUN apt install --assume-yes libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
     libncursesw5-dev git zip wget nano make ssh-client less sudo \
-    openssh-client alien libaio-dev firefox-geckodriver
+    openssh-client alien libaio-dev firefox-geckodriver tensorflow-model-server
 
 # customize bash welcome message
 ADD bash.bashrc /etc
