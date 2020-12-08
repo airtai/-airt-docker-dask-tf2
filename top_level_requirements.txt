@@ -27,6 +27,10 @@ cchardet>=2.1.7
 holoviews[recommended]>=1.14.0
 traceback-with-variables>=1.1.9
 s3fs>=0.5.1
+cx-Oracle==8.0.1
+tensorflow-addons>=0.11.2
+selenium>=3.141.0
+traceback-with-variables>=1.1.9
+s3fs>=0.5.1
 mypy>=0.790
-cx-Oracle
 
