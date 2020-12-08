@@ -52,6 +52,6 @@ docker run --rm $GPU_PARAMS -u $(id -u):$(id -g) \
       -p $AIRT_JUPYTER_PORT:8888 -p $AIRT_TB_PORT:6006 -p $AIRT_DASK_PORT:8787 \
       -v $AIRT_DATA:/work/data -v $AIRT_PROJECT:/tf/airt \
       -v /etc/passwd:/etc/passwd -v /etc/group:/etc/group -v /etc/shadow:/etc/shadow \
-      -v $HOME/.ssh:$HOME/.ssh -v $HOME/.gitconfig:/root/.gitconfig -v $HOME/.local:/root/.local -v $HOME/.aws:/root/.aws \
+      -v $HOME/.ssh:$HOME/.ssh -v $HOME/.gitconfig:/root/.gitconfig -v $HOME/.aws:/root/.aws \
       -e USER=$USER -e USERNAME=$USERNAME \
       $AIRT_DOCKER
