@@ -28,3 +28,5 @@ holoviews[recommended]>=1.14.0
 traceback-with-variables>=1.1.9
 s3fs>=0.5.1
 mypy>=0.790
+cx-Oracle
+
