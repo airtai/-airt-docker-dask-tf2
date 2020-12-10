@@ -40,7 +40,7 @@ RUN if [ -n "$ACCESS_REP_TOKEN" ] ; \
 
 # customize your jupyter notebook
 ADD airt-neg-trans-small.png .
-RUN jt -t airt -cellw 90% -N -T --logo airt-neg-trans-small.png
+RUN jt -t airtd -cellw 90% -N -T --logo airt-neg-trans-small.png
 RUN rm airt-neg-trans-small.png
 
 # Install and enable black python formatter for notebooks
