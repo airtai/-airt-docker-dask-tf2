@@ -35,6 +35,8 @@ s3fs>=0.5.1
 mypy>=0.790
 eurostat>=0.2.1
 twine>=3.2.0
-keyrings.alt>=3.0.0
+keyrings.alt>=4.0.0
 torch>=1.7.1
+torchvision>=0.8.2
+
 
