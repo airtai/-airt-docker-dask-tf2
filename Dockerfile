@@ -10,15 +10,26 @@ ENV DEBIAN_FRONTEND noninteractive
 # needed for TF serving
 RUN echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt stable tensorflow-model-server tensorflow-model-server-universal" | tee /etc/apt/sources.list.d/tensorflow-serving.list && curl https://storage.googleapis.com/tensorflow-serving-apt/tensorflow-serving.release.pub.gpg | apt-key add -
 
+
+RUN apt install --assume-yes wget alien libaio-dev
+
+# Install oracle client library
+RUN wget -O oracle-client-19.9.rpm https://download.oracle.com/otn_software/linux/instantclient/199000/oracle-instantclient19.9-basic-19.9.0.0.0-1.x86_64.rpm
+RUN alien -i --scripts oracle-client-19.9.rpm
+
 # update system
 RUN apt update --fix-missing
 RUN apt-mark hold libcudnn7 cuda-compat-10-1
 # RUN apt upgrade --assume-yes --fix-missing
 
+RUN apt install --assume-yes ruby-full build-essential zlib1g-dev
+
+RUN gem install jekyll
+RUN gem install bundler:2.0.2
 
 # snappy compression is needed by Parquet and graphviz for visualization of execution graphs by Dask
 RUN apt install --assume-yes libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
-    libncursesw5-dev git zip wget nano make ssh-client less sudo \
+    libncursesw5-dev git zip nano make ssh-client less sudo \
     openssh-client alien libaio-dev firefox-geckodriver tensorflow-model-server
 
 # customize bash welcome message
@@ -46,10 +57,6 @@ RUN rm airt-neg-trans-small.png
 # Install and enable black python formatter for notebooks
 RUN jupyter nbextension install https://github.com/drillan/jupyter-black/archive/master.zip
 RUN jupyter nbextension enable jupyter-black-master/jupyter-black
-
-# Install oracle client library
-RUN wget -O oracle-client-19.9.rpm https://download.oracle.com/otn_software/linux/instantclient/199000/oracle-instantclient19.9-basic-19.9.0.0.0-1.x86_64.rpm
-RUN alien -i --scripts oracle-client-19.9.rpm
 
 # cleanup
 RUN ls -al
