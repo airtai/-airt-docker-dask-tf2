@@ -27,6 +27,10 @@ RUN apt install --assume-yes ruby-full build-essential zlib1g-dev
 RUN gem install jekyll
 RUN gem install bundler:2.0.2
 
+ADD Gemfile .
+RUN bundle install
+RUN rm Gemfile
+
 # snappy compression is needed by Parquet and graphviz for visualization of execution graphs by Dask
 RUN apt install --assume-yes libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
     libncursesw5-dev git zip nano make ssh-client less sudo \
@@ -43,6 +47,8 @@ RUN pip3 install --upgrade setuptools wheel
 ADD top_level_requirements.txt .
 RUN pip3 install -r top_level_requirements.txt
 
+RUN ls
+
 # install jupyter theme with airt theme
 RUN if [ -n "$ACCESS_REP_TOKEN" ] ; \
     then pip3 install git+https://oauth2:${ACCESS_REP_TOKEN}@gitlab.com/airt.ai/jupyter-themes.git ; \
@@ -50,9 +56,9 @@ RUN if [ -n "$ACCESS_REP_TOKEN" ] ; \
     fi
 
 # customize your jupyter notebook
-ADD airt-neg-trans-small.png .
-RUN jt -t airtd -cellw 90% -N -T --logo airt-neg-trans-small.png
-RUN rm airt-neg-trans-small.png
+ADD airt-neg-trans-small.png /root
+ADD infobip-small*.png /root
+RUN jt -t airtd -cellw 90% -N -T --logo /root/airt-neg-trans-small.png
 
 # Install and enable black python formatter for notebooks
 RUN jupyter nbextension install https://github.com/drillan/jupyter-black/archive/master.zip
@@ -83,7 +89,4 @@ RUN chmod 777 /root/.local/bin
 # default shell is fish
 ENV SHELL /usr/bin/fish
 SHELL ["/usr/bin/fish", "-c"]
-
-ADD Gemfile .
-RUN bundle install
 
