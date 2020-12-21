@@ -83,3 +83,7 @@ RUN chmod 777 /root/.local/bin
 # default shell is fish
 ENV SHELL /usr/bin/fish
 SHELL ["/usr/bin/fish", "-c"]
+
+ADD Gemfile .
+RUN bundle install
+
