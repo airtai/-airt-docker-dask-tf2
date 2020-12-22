@@ -11,16 +11,16 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt stable tensorflow-model-server tensorflow-model-server-universal" | tee /etc/apt/sources.list.d/tensorflow-serving.list && curl https://storage.googleapis.com/tensorflow-serving-apt/tensorflow-serving.release.pub.gpg | apt-key add -
 
 
+# update system
+RUN apt update --fix-missing
+RUN apt-mark hold libcudnn7 cuda-compat-10-1
+# RUN apt upgrade --assume-yes --fix-missing
+
 RUN apt install --assume-yes wget alien libaio-dev
 
 # Install oracle client library
 RUN wget -O oracle-client-19.9.rpm https://download.oracle.com/otn_software/linux/instantclient/199000/oracle-instantclient19.9-basic-19.9.0.0.0-1.x86_64.rpm
 RUN alien -i --scripts oracle-client-19.9.rpm
-
-# update system
-RUN apt update --fix-missing
-RUN apt-mark hold libcudnn7 cuda-compat-10-1
-# RUN apt upgrade --assume-yes --fix-missing
 
 RUN apt install --assume-yes ruby-full build-essential zlib1g-dev
 
@@ -57,7 +57,7 @@ RUN if [ -n "$ACCESS_REP_TOKEN" ] ; \
 
 # customize your jupyter notebook
 ADD airt-neg-trans-small.png /root
-ADD infobip-small*.png /root
+ADD infobip-small*.png /root/ 
 RUN jt -t airtd -cellw 90% -N -T --logo /root/airt-neg-trans-small.png
 
 # Install and enable black python formatter for notebooks
