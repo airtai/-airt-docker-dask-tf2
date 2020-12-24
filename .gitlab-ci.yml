@@ -23,8 +23,8 @@ docker_build_push:
     - dev
   script:
     - docker build --no-cache --build-arg CI_JOB_TOKEN -t $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH .
-    - if [ $CI_COMMIT_BRANCH = "master" ]; then docker build --build-arg CI_JOB_TOKEN -t $CI_REGISTRY_IMAGE:latest .; fi
-    - docker push $CI_REGISTRY_IMAGE
+    - if [ $CI_COMMIT_BRANCH = "master" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH $CI_REGISTRY_IMAGE:latest; fi
+    - docker push $CI_REGISTRY_IMAGE --all-tags
 
 docker_build:
   stage: build_image
