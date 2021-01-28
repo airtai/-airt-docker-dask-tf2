@@ -25,14 +25,14 @@ RUN alien -i --scripts oracle-client-19.9.rpm
 RUN apt install --assume-yes ruby-full build-essential zlib1g-dev
 
 RUN gem install jekyll
-RUN gem install bundler:2.0.2
+RUN gem install bundler
 
 ADD Gemfile .
 RUN bundle install
 RUN rm Gemfile
 
 # snappy compression is needed by Parquet and graphviz for visualization of execution graphs by Dask
-RUN apt install --assume-yes libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
+RUN apt install --assume-yes --fix-missing libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
     libncursesw5-dev git zip nano make ssh-client less sudo \
     openssh-client alien libaio-dev firefox-geckodriver tensorflow-model-server
 
