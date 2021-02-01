@@ -38,5 +38,5 @@ twine>=3.2.0
 keyrings.alt>=4.0.0
 torch>=1.7.1
 torchvision>=0.8.2
-
+boto3>=1.16.63
 
