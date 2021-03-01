@@ -40,5 +40,5 @@ torch>=1.7.1
 torchvision>=0.8.2
 boto3>=1.16.63
 tensorflow_io>=0.17.0
-
+jedi==0.17.2
 
