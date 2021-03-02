@@ -23,6 +23,13 @@ else
       echo AIRT_DASK_PORT variable set to $AIRT_DASK_PORT
 fi
 
+if test -z "$AIRT_DOCS_PORT"; then
+      echo 'AIRT_DOCS_PORT variable not set, setting to 4000'
+      export AIRT_DOCS_PORT=4000
+else
+      echo AIRT_DOCS_PORT variable set to $AIRT_DOCS_PORT
+fi
+
 if test -z "$AIRT_DATA"; then
       echo 'AIRT_DATA variable not set, setting to current directory'
       export AIRT_DATA=$(pwd)
@@ -49,9 +56,9 @@ fi
 
 docker run --rm $GPU_PARAMS -u $(id -u):$(id -g) \
       -e JUPYTER_CONFIG_DIR=/root/.jupyter \
-      -p $AIRT_JUPYTER_PORT:8888 -p $AIRT_TB_PORT:6006 -p $AIRT_DASK_PORT:8787 \
+      -p $AIRT_JUPYTER_PORT:8888 -p $AIRT_TB_PORT:6006 -p $AIRT_DASK_PORT:8787 -p $AIRT_DOCS_PORT:4000 \
       -v $AIRT_DATA:/work/data -v $AIRT_PROJECT:/tf/airt \
       -v /etc/passwd:/etc/passwd -v /etc/group:/etc/group -v /etc/shadow:/etc/shadow \
-      -v $HOME/.ssh:$HOME/.ssh -v $HOME/.gitconfig:/root/.gitconfig -v $HOME/.local:/root/.local -v $HOME/.aws:/root/.aws \
+      -v $HOME/.ssh:$HOME/.ssh -v $HOME/.gitconfig:/root/.gitconfig -v $HOME/.aws:/root/.aws \
       -e USER=$USER -e USERNAME=$USERNAME \
       $AIRT_DOCKER
