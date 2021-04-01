@@ -34,7 +34,7 @@ ADD bash.bashrc /etc
 ADD nvtop /usr/local/bin
 
 # install requirements
-RUN conda install --name rapids pip
+RUN conda install --name rapids pip nb_conda_kernels
 ENV PATH /opt/conda/envs/rapids/bin:$PATH
 RUN source activate rapids && pip install setuptools wheel jupyter matplotlib jupyter_http_over_ws ipykernel nbformat
 
