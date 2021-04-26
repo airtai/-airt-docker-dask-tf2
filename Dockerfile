@@ -1,4 +1,4 @@
-FROM rapidsai/rapidsai:0.18-cuda11.0-base-ubuntu20.04-py3.8
+FROM rapidsai/rapidsai\:0.19-cuda11.0-runtime-ubuntu20.04-py3.8
 
 # Token to authenticate for jt
 ARG CI_JOB_TOKEN
@@ -7,7 +7,7 @@ ARG ACCESS_REP_TOKEN
 # needed to suppress tons of debconf messages
 ENV DEBIAN_FRONTEND noninteractive
 
-#RUN apt-mark hold libcudnn7 cuda-compat-10-1
+#RUN apt-mark hold libcudnn7 cuda-compat-11-2
 
 # needed for TF serving
 RUN echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt stable tensorflow-model-server tensorflow-model-server-universal" | tee /etc/apt/sources.list.d/tensorflow-serving.list && curl https://storage.googleapis.com/tensorflow-serving-apt/tensorflow-serving.release.pub.gpg | apt-key add -
@@ -83,4 +83,5 @@ RUN echo "conda activate rapids" >> /root/.config/fish/config.fish
 
 WORKDIR /tf
 
-CMD ["/usr/bin/fish", "-c", "conda activate rapids; jupyter notebook --notebook-dir=/tf --ip 0.0.0.0 --no-browser --allow-root"]
+ENTRYPOINT ["/usr/bin/fish", "-c", "conda activate rapids; jupyter notebook --notebook-dir=/tf --ip 0.0.0.0 --no-browser --allow-root"]
+
