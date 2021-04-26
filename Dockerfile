@@ -1,4 +1,4 @@
-FROM rapidsai/rapidsai:0.19-cuda11.2-base-ubuntu20.04-py3.8
+FROM rapidsai/rapidsai:0.19-cuda11.0-base-ubuntu20.04-py3.8
 
 # Token to authenticate for jt
 ARG CI_JOB_TOKEN
@@ -24,8 +24,8 @@ RUN wget -O oracle-client-19.9.rpm https://download.oracle.com/otn_software/linu
 
 RUN gem install jekyll bundler
 
-ADD Gemfile .
-RUN bundle install && rm Gemfile
+#ADD Gemfile .
+#RUN bundle install && rm Gemfile
 
 # customize bash welcome message
 ADD bash.bashrc /etc
@@ -34,7 +34,7 @@ ADD bash.bashrc /etc
 ADD nvtop /usr/local/bin
 
 # install requirements
-RUN conda install --name rapids pip nb_conda_kernels
+RUN conda install --name rapids nb_conda_kernels # pip 
 ENV PATH /opt/conda/envs/rapids/bin:$PATH
 RUN source activate rapids && pip install setuptools wheel jupyter matplotlib jupyter_http_over_ws ipykernel nbformat
 
