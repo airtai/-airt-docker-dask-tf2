@@ -1,4 +1,4 @@
-FROM rapidsai/rapidsai\:0.19-cuda11.0-runtime-ubuntu20.04-py3.8
+FROM rapidsai/rapidsai:0.19-cuda11.2-base-ubuntu20.04-py3.8
 
 # Token to authenticate for jt
 ARG CI_JOB_TOKEN
