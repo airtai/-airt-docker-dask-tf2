@@ -1,4 +1,70 @@
-FROM rapidsai/rapidsai:0.19-cuda11.2-base-ubuntu20.04-py3.8
+ARG UBUNTU_VERSION=18.04
+
+ARG ARCH
+ARG CUDA=11.2
+
+FROM rapidsai/rapidsai:0.19-cuda${CUDA}-base-ubuntu${UBUNTU_VERSION}-py3.8
+
+######################################################################################
+######################################################################################
+######################################################################################
+#
+# BEGIN part from from TF 2.5.0-rc1 Dockerfile
+#
+# see https://github.com/tensorflow/tensorflow/blob/v2.5.0-rc1/tensorflow/tools/dockerfiles/dockerfiles/gpu-jupyter.Dockerfile
+
+ARG ARCH
+ARG CUDA
+ARG CUDNN=8.1.0.77-1
+ARG CUDNN_MAJOR_VERSION=8
+ARG LIB_DIR_PREFIX=x86_64
+ARG LIBNVINFER=7.2.2-1
+ARG LIBNVINFER_MAJOR_VERSION=7
+
+# Needed for string substitution
+SHELL ["/bin/bash", "-c"]
+# Pick up some TF dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        cuda-command-line-tools-${CUDA/./-} \
+        libcublas-${CUDA/./-} \
+        cuda-nvrtc-${CUDA/./-} \
+        libcufft-${CUDA/./-} \
+        libcurand-${CUDA/./-} \
+        libcusolver-${CUDA/./-} \
+        libcusparse-${CUDA/./-} \
+        curl \
+        libcudnn8=${CUDNN}+cuda${CUDA} \
+        libfreetype6-dev \
+        libhdf5-serial-dev \
+        libzmq3-dev \
+        pkg-config \
+        software-properties-common \
+        unzip
+
+# Install TensorRT if not building for PowerPC
+# NOTE: libnvinfer uses cuda11.1 versions
+RUN [[ "${ARCH}" = "ppc64le" ]] || { apt-get update && \
+        apt-get install -y --no-install-recommends libnvinfer${LIBNVINFER_MAJOR_VERSION}=${LIBNVINFER}+cuda11.1 \
+        libnvinfer-plugin${LIBNVINFER_MAJOR_VERSION}=${LIBNVINFER}+cuda11.1 \
+        && apt-get clean \
+        && rm -rf /var/lib/apt/lists/*; }
+
+# For CUDA profiling, TensorFlow requires CUPTI.
+ENV LD_LIBRARY_PATH /usr/local/cuda/extras/CUPTI/lib64:/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
+# Link the libcuda stub to the location where tensorflow is searching for it and reconfigure
+# dynamic linker run-time bindings
+RUN ln -s /usr/local/cuda/lib64/stubs/libcuda.so /usr/local/cuda/lib64/stubs/libcuda.so.1 \
+    && echo "/usr/local/cuda/lib64/stubs" > /etc/ld.so.conf.d/z-cuda-stubs.conf \
+    && ldconfig
+    
+#
+# END part from from TF 2.5.0-rc1 Dockerfile
+#
+######################################################################################
+######################################################################################
+######################################################################################
 
 # Token to authenticate for jt
 ARG CI_JOB_TOKEN
@@ -31,7 +97,8 @@ RUN gem install jekyll bundler
 ADD bash.bashrc /etc
 
 # nvtop is locally compiled
-ADD nvtop /usr/local/bin
+ARG UBUNTU_VERSION
+ADD nvtop-${UBUNTU_VERSION} /usr/local/bin/nvtop
 
 # install requirements
 RUN conda install --name rapids nb_conda_kernels # pip 
@@ -83,5 +150,6 @@ RUN echo "conda activate rapids" >> /root/.config/fish/config.fish
 
 WORKDIR /tf
 
-ENTRYPOINT ["/usr/bin/fish", "-c", "conda activate rapids; jupyter notebook --notebook-dir=/tf --ip 0.0.0.0 --no-browser --allow-root"]
+CMD ["/usr/bin/fish", "-c", "conda activate rapids; jupyter notebook --notebook-dir=/tf --ip 0.0.0.0 --no-browser --allow-root"]
 
+RUN chmod -R 777 /root/.config
