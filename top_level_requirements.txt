@@ -1,4 +1,4 @@
-#bokeh==2.3.1
+bokeh==2.3.1
 fastparquet==0.5.0
 #pandas==1.1.5
 python-snappy==0.6.0
