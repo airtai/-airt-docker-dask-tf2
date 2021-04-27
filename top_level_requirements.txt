@@ -34,15 +34,8 @@ mypy==0.812
 eurostat==0.2.3
 twine==3.4.1
 keyrings.alt==4.0.2
-torch==1.7.1
-torchvision==0.8.2
 boto3==1.17.53
 tensorflow-io==0.17.1
 jedi==0.17.2
-tensorflow-gpu==2.4.1
-fastapi==0.63.0
-plotly==4.14.3
-uvicorn==0.13.4
-pydantic[email,dotenv]==1.8.1
-fastai==2.3.0
+tensorflow==2.5.0-rc1
 
