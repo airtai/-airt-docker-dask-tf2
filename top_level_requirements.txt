@@ -18,7 +18,7 @@ dvc==2.0.18
 typer==0.3.2
 names==0.3.0
 RandomWords==0.3.0
-awscli==1.19.53
+awscli
 black==20.8b1
 PyYAML==5.4.1
 clevercsv==0.6.7
@@ -28,14 +28,18 @@ holoviews[recommended]==1.14.3
 traceback-with-variables==2.0.1
 s3fs==0.4.2
 cx-Oracle==8.1.0
-tensorflow-addons==0.12.1
+#tensorflow-addons==0.12.1
 selenium==3.141.0
 mypy==0.812
 eurostat==0.2.3
 twine==3.4.1
 keyrings.alt==4.0.2
-boto3==1.17.53
-tensorflow-io==0.17.1
+boto3
+#tensorflow-io==0.17.1
 jedi==0.17.2
-tensorflow==2.5.0-rc1
+tensorflow-gpu==2.5.0-rc1
+fastapi==0.63.0
+plotly==4.14.3
+uvicorn==0.13.4
+pydantic[email,dotenv]==1.8.1
 
