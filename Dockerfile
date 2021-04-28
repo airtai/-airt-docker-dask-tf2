@@ -76,12 +76,14 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-mark hold cuda-compat-11-2
 
 # needed for TF serving
-RUN echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt stable tensorflow-model-server tensorflow-model-server-universal" | tee /etc/apt/sources.list.d/tensorflow-serving.list && curl https://storage.googleapis.com/tensorflow-serving-apt/tensorflow-serving.release.pub.gpg | apt-key add -
+RUN echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt stable tensorflow-model-server tensorflow-model-server-universal" | tee /etc/apt/sources.list.d/tensorflow-serving.list \
+    && curl https://storage.googleapis.com/tensorflow-serving-apt/tensorflow-serving.release.pub.gpg | apt-key add -
 
 RUN apt update --fix-missing \
-    && apt install --assume-yes --fix-missing wget alien libaio-dev curl libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
+    && apt install --assume-yes --fix-missing --no-install-recommends wget alien libaio-dev libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
     libncursesw5-dev git zip nano make less sudo \
-    alien libaio-dev firefox-geckodriver ruby-full build-essential zlib1g-dev ssh-client openssh-client
+    alien libaio-dev firefox-geckodriver ruby-full build-essential zlib1g-dev ssh-client openssh-client \
+    && apt purge --auto-remove && apt clean && rm -rf /var/lib/apt/lists/*
 
 # Install oracle client library
 RUN wget -O oracle-client-19.9.rpm https://download.oracle.com/otn_software/linux/instantclient/199000/oracle-instantclient19.9-basic-19.9.0.0.0-1.x86_64.rpm \
@@ -103,16 +105,16 @@ ADD nvtop-${UBUNTU_VERSION} /usr/local/bin/nvtop
 # install requirements
 RUN conda install --name rapids nb_conda_kernels # pip 
 ENV PATH /opt/conda/envs/rapids/bin:$PATH
-RUN source activate rapids && pip install setuptools wheel jupyter matplotlib jupyter_http_over_ws ipykernel nbformat
+RUN source activate rapids && pip install --no-cache-dir setuptools wheel jupyter matplotlib jupyter_http_over_ws ipykernel nbformat
 
 ADD top_level_requirements.txt .
-RUN source activate rapids && pip install -r top_level_requirements.txt && rm top_level_requirements.txt
+RUN source activate rapids && pip install --no-cache-dir -r top_level_requirements.txt && rm top_level_requirements.txt
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
 # install jupyter theme with airt theme
 RUN source activate rapids && if [ -n "$ACCESS_REP_TOKEN" ] ; \
-    then pip install git+https://oauth2:${ACCESS_REP_TOKEN}@gitlab.com/airt.ai/jupyter-themes.git ; \
-    else pip install git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/airt.ai/jupyter-themes.git ; \
+    then pip install --no-cache-dir git+https://oauth2:${ACCESS_REP_TOKEN}@gitlab.com/airt.ai/jupyter-themes.git ; \
+    else pip install --no-cache-dir git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/airt.ai/jupyter-themes.git ; \
     fi
 
 # customize your jupyter notebook
