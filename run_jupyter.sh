@@ -1,6 +1,25 @@
 #!/bin/bash
 
-export AIRT_DOCKER=registry.gitlab.com/airt.ai/airt-docker-dask-tf2:dev
+AIRT_DOCKER=registry.gitlab.com/airt.ai/airt-docker-dask-tf2
+
+BRANCH=$(git branch --show-current)
+if [ "$BRANCH" == "master" ]
+then
+    TAG=latest
+elif [ "$BRANCH" == "dev" ]
+then
+    TAG=dev
+else
+    if [ "$(docker image ls -q $AIRT_DOCKER:$BRANCH)" == "" ]
+    then
+        TAG=dev
+    else
+        TAG=$BRANCH
+    fi
+fi
+export AIRT_DOCKER=$AIRT_DOCKER:$TAG
+
+
 
 if test -z "$AIRT_JUPYTER_PORT"; then
       echo 'AIRT_JUPYTER_PORT variable not set, setting to 8888'
@@ -54,7 +73,7 @@ else
       export GPU_PARAMS=""
 fi
 
-docker run --rm $GPU_PARAMS -u $(id -u):$(id -g) \
+docker run -it --rm $GPU_PARAMS -u $(id -u):$(id -g) \
       -e JUPYTER_CONFIG_DIR=/root/.jupyter \
       -p $AIRT_JUPYTER_PORT:8888 -p $AIRT_TB_PORT:6006 -p $AIRT_DASK_PORT:8787 -p $AIRT_DOCS_PORT:4000 \
       -v $AIRT_DATA:/work/data -v $AIRT_PROJECT:/tf/airt \
