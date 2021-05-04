@@ -109,6 +109,7 @@ RUN source activate rapids && pip install --no-cache-dir setuptools wheel jupyte
 
 ADD top_level_requirements.txt .
 RUN source activate rapids && pip install --no-cache-dir -r top_level_requirements.txt && rm top_level_requirements.txt
+RUN source activate rapids && pip install --no-cache-dir fastparquet
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
 # install jupyter theme with airt theme
