@@ -154,6 +154,5 @@ WORKDIR /tf
 
 ENTRYPOINT []
 CMD ["/usr/bin/fish", "-c", "conda activate rapids; jupyter notebook --notebook-dir=/tf --ip 0.0.0.0 --no-browser --allow-root"]
-ENTRYPOINT []
 
 RUN chmod -R 777 /root/.config
