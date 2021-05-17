@@ -28,8 +28,8 @@ holoviews[recommended]==1.14.3
 traceback-with-variables==2.0.1
 s3fs==0.4.2
 cx-Oracle==8.1.0
-#tensorflow-addons==0.12.1
-tfa-nightly
+tensorflow-addons==0.13.0
+#tfa-nightly
 selenium==3.141.0
 mypy==0.812
 eurostat==0.2.3
