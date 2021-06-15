@@ -42,5 +42,5 @@ tensorflow-gpu==2.5.0
 fastapi==0.63.0
 plotly==4.14.3
 uvicorn==0.13.4
+kaleido==0.2.1
 pydantic[email,dotenv]==1.8.1
-
