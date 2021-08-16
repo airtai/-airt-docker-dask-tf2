@@ -3,7 +3,7 @@ ARG UBUNTU_VERSION=18.04
 ARG ARCH
 ARG CUDA=11.2
 
-FROM rapidsai/rapidsai:0.19-cuda${CUDA}-base-ubuntu${UBUNTU_VERSION}-py3.8
+FROM rapidsai/rapidsai:21.06-cuda${CUDA}-base-ubuntu${UBUNTU_VERSION}-py3.8
 
 ######################################################################################
 ######################################################################################
