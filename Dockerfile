@@ -3,7 +3,7 @@ ARG UBUNTU_VERSION=18.04
 ARG ARCH
 ARG CUDA=11.2
 
-FROM rapidsai/rapidsai:21.06-cuda${CUDA}-base-ubuntu${UBUNTU_VERSION}-py3.8
+FROM rapidsai/rapidsai:0.19-cuda${CUDA}-base-ubuntu${UBUNTU_VERSION}-py3.8
 
 ######################################################################################
 ######################################################################################
@@ -82,7 +82,7 @@ RUN echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt 
 RUN apt update --fix-missing \
     && apt install --assume-yes --fix-missing --no-install-recommends wget alien libaio-dev libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
     libncursesw5-dev git zip nano make less sudo \
-    alien libaio-dev firefox-geckodriver ruby-full build-essential zlib1g-dev ssh-client openssh-client \
+    alien libaio-dev firefox-geckodriver ruby-full build-essential zlib1g-dev ssh-client openssh-client libmysqlclient-dev \
     && apt purge --auto-remove && apt clean && rm -rf /var/lib/apt/lists/*
 
 # Install oracle client library

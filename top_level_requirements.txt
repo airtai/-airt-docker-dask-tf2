@@ -42,4 +42,6 @@ tensorflow==2.5.0
 fastapi==0.63.0
 plotly==4.14.3
 uvicorn==0.13.4
-pydantic[email,dotenv]==1.8.1
+pydantic[email,dotenv]==1.8.2
+sqlmodel==0.0.4
+mysqlclient==2.0.3
