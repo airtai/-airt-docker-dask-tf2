@@ -8,6 +8,7 @@ nbformat==4.4.0
 jedi==0.17.2
 
 # dev tools
+awscli==1.20.41
 nbdev==1.1.22
 dvc>=2.2
 black==21.7b0
