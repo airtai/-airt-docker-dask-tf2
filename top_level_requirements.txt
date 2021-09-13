@@ -10,7 +10,7 @@ jedi==0.17.2
 # dev tools
 awscli==1.20.41
 nbdev==1.1.22
-dvc==2.1.0
+dvc[s3]==2.1.0
 black==21.7b0
 traceback-with-variables==2.0.2
 mypy==0.910
