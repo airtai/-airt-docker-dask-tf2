@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:2.5.1-gpu-jupyter
+FROM tensorflow/tensorflow:2.6.0-gpu-jupyter
 
 # Token to authenticate for jt
 ARG CI_JOB_TOKEN

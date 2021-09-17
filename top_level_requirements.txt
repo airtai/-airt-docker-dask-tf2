@@ -1,5 +1,5 @@
 # reinstall TF and deps
-tensorflow==2.5.1
+tensorflow==2.6.0
 jupyter
 matplotlib
 jupyter_http_over_ws
