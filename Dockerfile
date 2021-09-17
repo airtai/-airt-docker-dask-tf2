@@ -21,7 +21,7 @@ RUN apt update --fix-missing \
     && apt install --assume-yes --fix-missing --no-install-recommends\
       wget alien libaio-dev libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
       libncursesw5-dev git zip nano make less sudo \
-      alien libaio-dev firefox-geckodriver ruby-full build-essential zlib1g-dev ssh-client openssh-client libmysqlclient-dev\
+      alien libaio-dev firefox-geckodriver build-essential zlib1g-dev ssh-client openssh-client libmysqlclient-dev\
       python3.8\
     && apt purge --auto-remove && apt clean && rm -rf /var/lib/apt/lists/*
 
@@ -38,7 +38,7 @@ RUN python -m pip install --upgrade pip
 #    && alien -i --scripts oracle-client-19.9.rpm \
 #    && rm oracle-client-19.9.rpm
 
-RUN gem install jekyll bundler
+#RUN gem install jekyll bundler
 
 #ADD Gemfile .
 #RUN bundle install && rm Gemfile
@@ -101,6 +101,8 @@ ENV SHELL /usr/bin/fish
 #RUN echo "conda activate rapids" >> /root/.config/fish/config.fish
 
 WORKDIR /tf
+
+RUN rm -rf /tf/tensorflow*
 
 ENTRYPOINT []
 CMD ["/usr/bin/fish", "-c", "jupyter notebook --notebook-dir=/tf --ip 0.0.0.0 --no-browser --allow-root"]
