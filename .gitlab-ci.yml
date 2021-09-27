@@ -23,11 +23,11 @@ docker_build_push:
     - master
     - dev
   script:
-    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH || true
-    - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=18.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH .
-    - if [ $CI_COMMIT_BRANCH = "master" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH $CI_REGISTRY_IMAGE:latest; fi
+    - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME || true
+    - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=18.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
+    - if [ $CI_COMMIT_REF_NAME = "master" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:latest; fi
     - version=$(head -n 1 version.txt)
-    - if [ $CI_COMMIT_BRANCH = "master" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH $CI_REGISTRY_IMAGE:$version; fi
+    - if [ $CI_COMMIT_REF_NAME = "master" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:$version; fi
     - docker push $CI_REGISTRY_IMAGE --all-tags
 
 docker_build:
@@ -37,7 +37,7 @@ docker_build:
     - dev
   script:
     - docker pull $CI_REGISTRY_IMAGE:dev || true
-    - docker build --cache-from $CI_REGISTRY_IMAGE:dev --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=18.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_BRANCH .
+    - docker build --cache-from $CI_REGISTRY_IMAGE:dev --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=18.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
 
 trigger_downstream:
   image: registry.gitlab.com/airt.ai/airt-docker-dask-tf2:master
@@ -49,4 +49,4 @@ trigger_downstream:
     - apt update && apt install -y curl git
   script:
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/airt.ai/downstream-trigger.git
-    - ./downstream-trigger/downstream.sh https://gitlab.com/api/v4/projects/ $CI_JOB_TOKEN $CI_COMMIT_BRANCH 17276346
+    - ./downstream-trigger/downstream.sh https://gitlab.com/api/v4/projects/ $CI_JOB_TOKEN $CI_COMMIT_REF_NAME 17276346
