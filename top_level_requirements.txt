@@ -14,7 +14,7 @@ nbformat==5.0.8
 awscli==1.22.5
 nbdev==1.1.23
 dvc[s3]==2.1.0
-#black==21.7b0
+black==21.7b0
 traceback-with-variables==2.0.2
 mypy==0.910
 twine==3.6.0
