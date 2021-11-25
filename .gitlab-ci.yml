@@ -24,7 +24,7 @@ docker_build_push:
     - dev
   script:
     - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME || true
-    - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=18.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
+    - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
     - if [ $CI_COMMIT_REF_NAME = "master" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:latest; fi
     - version=$(head -n 1 version.txt)
     - if [ $CI_COMMIT_REF_NAME = "master" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:$version; fi
@@ -37,7 +37,7 @@ docker_build:
     - dev
   script:
     - docker pull $CI_REGISTRY_IMAGE:dev || true
-    - docker build --cache-from $CI_REGISTRY_IMAGE:dev --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=18.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
+    - docker build --cache-from $CI_REGISTRY_IMAGE:dev --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
 
 trigger_downstream:
   image: registry.gitlab.com/airt.ai/airt-docker-dask-tf2:master
