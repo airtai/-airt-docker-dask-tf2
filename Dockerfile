@@ -69,7 +69,7 @@ RUN if [ -n "$ACCESS_REP_TOKEN" ] ; \
 # customize your jupyter notebook
 ADD airt-neg-trans-small.png /root
 ADD infobip-small*.png /root/
-ADD airt_favicons /root
+COPY airt_favicons ./airt_favicons
 RUN jt -t airtd -cellw 90% -N -T --logo /root/airt-neg-trans-small.png --fav_icon_dir airt_favicons
 
 # Install and enable black python formatter for notebooks
