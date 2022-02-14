@@ -29,7 +29,7 @@ RUN apt update --fix-missing \
 #RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 2
 #RUN update-alternatives --config python3
 RUN python3 -V
-RUN pip install --upgrade "pip<22.0"
+RUN pip install --upgrade pip
 #RUN python -m pip install --upgrade pip
 
 # Install oracle client library
