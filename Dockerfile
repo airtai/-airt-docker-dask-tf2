@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:2.7.0-gpu-jupyter
+FROM tensorflow/tensorflow:2.8.0-gpu-jupyter
 
 # Token to authenticate for jt
 ARG CI_JOB_TOKEN
@@ -22,7 +22,6 @@ RUN apt update --fix-missing \
       wget alien libaio-dev libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
       libncursesw5-dev git zip nano make less sudo \
       alien libaio-dev firefox-geckodriver build-essential zlib1g-dev ssh-client openssh-client libmysqlclient-dev \
-      python3.8-dev \
     && apt purge --auto-remove && apt clean && rm -rf /var/lib/apt/lists/*
 
 # use Python 3.9 as default
