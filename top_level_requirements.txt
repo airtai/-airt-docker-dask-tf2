@@ -7,19 +7,18 @@
 #nbformat==4.4.0
 #jedi==0.17.2
 
-typing-extensions~=3.10.0.0
-nbformat==5.1.3
+#typing-extensions~=3.10.0.0 # Not sure who needs it
+#nbformat==5.1.3 # Not sure who needs it
 
 # dev tools
-awscli==1.22.24 # held back by dvc
-nbdev==1.1.23
-dvc[s3]==2.9.3
-s3fs[boto3]==2022.1.0
-black==21.7b0 # held back by typer-cli
+awscli==1.22.76 # held back by dvc
+nbdev==1.2.5
+dvc[s3]==2.10.1
+s3fs[boto3]==2022.3.0
+black==22.3.0
 traceback-with-variables==2.0.4
-mypy==0.931
-twine==3.8.0
+mypy==0.942
+twine==4.0.0
 keyrings.alt==4.1.0
-uvicorn==0.17.4
+uvicorn==0.17.6
 jupyter_contrib_nbextensions
-
