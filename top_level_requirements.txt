@@ -22,3 +22,6 @@ twine==4.0.0
 keyrings.alt==4.1.0
 uvicorn==0.17.6
 jupyter_contrib_nbextensions
+
+# needed for MkDocs => remove me with a new version of tf
+Pygments==2.12.0
