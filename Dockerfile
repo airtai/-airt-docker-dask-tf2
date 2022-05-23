@@ -16,7 +16,7 @@ RUN echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt 
 # needed for python3.8
 #RUN add-apt-repository ppa:deadsnakes/ppa
 
-
+RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
 RUN apt update --fix-missing \
     && apt install --assume-yes --fix-missing --no-install-recommends\
       wget alien libaio-dev libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
