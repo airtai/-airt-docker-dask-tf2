@@ -22,11 +22,10 @@ docker_build_push:
   only:
     - master
     - dev
-  before_script:
+  script:
     - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
     - apk update
     - apk add trivy
-  script:
     - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME || true
     - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
     - trivy image --no-progress -s CRITICAL,HIGH $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
@@ -41,11 +40,10 @@ docker_build:
   except:
     - master
     - dev
-  before_script:
+  script:
     - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
     - apk update
     - apk add trivy
-  script:
     - docker pull $CI_REGISTRY_IMAGE:dev || true
     - docker build --cache-from $CI_REGISTRY_IMAGE:dev --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
     - trivy image --no-progress -s CRITICAL,HIGH $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
