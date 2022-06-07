@@ -50,7 +50,7 @@ docker_build:
     - trivy image --no-progress --exit-code 1 -ignore-unfixed $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
 
 trigger_downstream:
-  image: registry.gitlab.com/airt.ai/airt-docker-dask-tf2:master
+  image: ubuntu:20.04
   stage: trigger_downstream
   only:
     - master
