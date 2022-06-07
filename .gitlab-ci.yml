@@ -40,7 +40,7 @@ docker_build:
     - docker build --cache-from $CI_REGISTRY_IMAGE:dev --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
 
 trigger_downstream:
-  image: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
+  image: ubuntu:20.04
   stage: trigger_downstream
   only:
     - master
