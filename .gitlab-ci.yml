@@ -22,10 +22,11 @@ docker_build_push:
   only:
     - master
     - dev
-  script:
+  before_script:
     - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
     - apk update
     - apk add trivy
+  script:
     - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME || true
     - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
     - trivy image --no-progress -s CRITICAL,HIGH $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
@@ -40,10 +41,11 @@ docker_build:
   except:
     - master
     - dev
-  script:
+  before_script:
     - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
     - apk update
     - apk add trivy
+  script:
     - docker pull $CI_REGISTRY_IMAGE:dev || true
     - docker build --cache-from $CI_REGISTRY_IMAGE:dev --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
     - trivy image --no-progress -s CRITICAL,HIGH $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME
@@ -56,7 +58,8 @@ trigger_downstream:
     - master
     - dev
   before_script:
-    - apt update && apt install -y curl git
+    - apk update
+    - apk add curl git
   script:
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/airt.ai/downstream-trigger.git
     - ./downstream-trigger/downstream.sh https://gitlab.com/api/v4/projects/ $CI_JOB_TOKEN $CI_COMMIT_REF_NAME 17276346
