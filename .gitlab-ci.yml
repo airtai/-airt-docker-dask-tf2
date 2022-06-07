@@ -58,8 +58,8 @@ trigger_downstream:
     - master
     - dev
   before_script:
-    - apk update
-    - apk add curl git
+    - apt update
+    - apt install --assume-yes curl git
   script:
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/airt.ai/downstream-trigger.git
     - ./downstream-trigger/downstream.sh https://gitlab.com/api/v4/projects/ $CI_JOB_TOKEN $CI_COMMIT_REF_NAME 17276346
