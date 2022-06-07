@@ -25,3 +25,7 @@ jupyter_contrib_nbextensions
 
 # needed for MkDocs => remove me with a new version of tf
 Pygments==2.12.0
+
+#trivy req
+Pillow==9.1.1
+
