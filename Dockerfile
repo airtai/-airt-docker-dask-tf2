@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:2.8.0-gpu-jupyter
+FROM tensorflow/tensorflow:2.8.2-gpu-jupyter
 
 # Token to authenticate for jt
 ARG CI_JOB_TOKEN
@@ -7,6 +7,7 @@ ARG ACCESS_REP_TOKEN
 # needed to suppress tons of debconf messages
 ENV DEBIAN_FRONTEND noninteractive
 
+# make sure we don't upgrade cuda installed by TF because everything t likely ill break
 RUN apt-mark hold cuda-compat-11-2
 
 # needed for TF serving
@@ -16,12 +17,19 @@ RUN echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt 
 # needed for python3.8
 #RUN add-apt-repository ppa:deadsnakes/ppa
 
-RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
-RUN apt update --fix-missing \
-    && apt install --assume-yes --fix-missing --no-install-recommends\
+# RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
+
+# install security updates
+RUN apt update --fix-missing
+RUN apt install --assume-yes unattended-upgrades
+RUN unattended-upgrade -d
+
+
+RUN apt install --assume-yes --fix-missing --no-install-recommends\
       wget alien libaio-dev libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
       libncursesw5-dev git zip nano make less sudo \
       alien libaio-dev firefox-geckodriver build-essential zlib1g-dev ssh-client openssh-client libmysqlclient-dev \
+      unattended-upgrades \
     && apt purge --auto-remove && apt clean && rm -rf /var/lib/apt/lists/*
 
 # use Python 3.9 as default
