@@ -4,6 +4,7 @@
 # 2. 17276346 - https://gitlab.com/airt.ai/infobip/docker-dask-tf2
 # 3. 17231350 - https://gitlab.com/airt.ai/mercury/docker-dask-tf2
 # 4. 19941057 - https://gitlab.com/airt.ai/zaba/docker-dask-tf2
+# 5. 29120234 - https://gitlab.com/airt.ai/airt-service
 
 image: docker:latest
 
@@ -72,4 +73,4 @@ trigger_downstream:
     - apt install --assume-yes curl git
   script:
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/airt.ai/downstream-trigger.git
-    - ./downstream-trigger/downstream.sh https://gitlab.com/api/v4/projects/ $CI_JOB_TOKEN $CI_COMMIT_REF_NAME 17276346
+    - ./downstream-trigger/downstream.sh https://gitlab.com/api/v4/projects/ $CI_JOB_TOKEN $CI_COMMIT_REF_NAME 29120234
