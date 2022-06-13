@@ -22,7 +22,15 @@ RUN echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt 
 # install security updates
 RUN apt update --fix-missing
 RUN apt install --assume-yes unattended-upgrades
+# Enable unattended-upgrades
+RUN dpkg-reconfigure --priority=low unattended-upgrades
+# The above command will create a config file in /etc/apt/apt.conf.d/20auto-upgrades.
+# Printing the contents of the configuration file. 
+# If the configuration for Unattended-Upgrade is "1" then the unattended upgrade will run every 1 day. If the number is "0" then unattended upgrades are disabled.
+RUN cat /etc/apt/apt.conf.d/20auto-upgrades
+# The below command will check and run upgrade only once while building
 RUN unattended-upgrade -d
+
 
 
 RUN apt install --assume-yes --fix-missing --no-install-recommends\
