@@ -1,1 +1,4 @@
 CVE-2022-1664
+
+# Following is a vulnerablility in jupyter notebook package. Ignoring it because we are not exposing jupyter in production
+CVE-2022-29238
