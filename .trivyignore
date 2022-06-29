@@ -1,1 +1,2 @@
 CVE-2022-1664
+DS002 # Rule: Specify at least 1 USER command in Dockerfile with non-root user as argument
