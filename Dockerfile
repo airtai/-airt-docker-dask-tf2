@@ -63,11 +63,11 @@ RUN pip install notebook==6.4.12
 #RUN bundle install && rm Gemfile
 
 # customize bash welcome message
-ADD bash.bashrc /etc
+COPY bash.bashrc /etc
 
 # nvtop is locally compiled
 ARG UBUNTU_VERSION
-ADD nvtop-${UBUNTU_VERSION} /usr/local/bin/nvtop
+COPY nvtop-${UBUNTU_VERSION} /usr/local/bin/nvtop
 
 # install requirements
 #RUN conda install --name rapids nb_conda_kernels # pip 
@@ -75,7 +75,7 @@ ADD nvtop-${UBUNTU_VERSION} /usr/local/bin/nvtop
 #RUN source activate rapids && pip install --no-cache-dir setuptools wheel jupyter matplotlib jupyter_http_over_ws ipykernel nbformat
 
 #RUN pip install --no-cache-dir setuptools==58.0.4 wheel six==1.15.0
-ADD top_level_requirements.txt .
+COPY top_level_requirements.txt .
 RUN pip install --no-cache-dir -r top_level_requirements.txt && rm top_level_requirements.txt
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
@@ -86,7 +86,7 @@ RUN if [ -n "$ACCESS_REP_TOKEN" ] ; \
     fi
 
 # customize your jupyter notebook
-ADD airt-neg-trans-small.png /root
+COPY airt-neg-trans-small.png /root
 #ADD infobip-small*.png /root/
 COPY airt_favicons /root/airt_favicons
 RUN jt -t airtd -cellw 90% -N -T --logo /root/airt-neg-trans-small.png --fav_icon_dir /root/airt_favicons
@@ -105,7 +105,7 @@ RUN curl --insecure -L https://get.oh-my.fish > install_omf \
     && ./install_omf --noninteractive \
     && rm install_omf \
     && echo omf install bobthefish | fish
-ADD config.fish /root/.config/fish/config.fish
+COPY config.fish /root/.config/fish/config.fish
 
 
 RUN chmod -R 777 /root

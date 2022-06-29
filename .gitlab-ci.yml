@@ -15,19 +15,31 @@ before_script:
   - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
 
 stages:
+  - trivy_scan_repo
   - build_image
   - check_image
   - trigger_downstream
 
+.install_trivy_template:
+  before_script:
+    - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+    - apk update
+    - apk add trivy
+
+trivy_scan_repo:
+  extends: .install_trivy_template
+  stage: trivy_scan_repo
+  script:
+    - trivy --version
+    - sh ./trivy_scan_repo.sh
+
 docker_build_push:
+  extends: .install_trivy_template
   stage: build_image
   only:
     - master
     - dev
   script:
-    - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-    - apk update
-    - apk add trivy
     - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME || true
     - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
     - sh ./check_docker.sh
@@ -37,27 +49,23 @@ docker_build_push:
     - docker push $CI_REGISTRY_IMAGE --all-tags
 
 docker_build:
+  extends: .install_trivy_template
   stage: build_image
   except:
     - master
     - dev
   script:
-    - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-    - apk update
-    - apk add trivy
     - docker pull $CI_REGISTRY_IMAGE:dev || true
     - docker build --cache-from $CI_REGISTRY_IMAGE:dev --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
     - sh ./check_docker.sh
 
 docker_image_check:
+  extends: .install_trivy_template
   stage: check_image
   only:
     - master
     - dev
   script:
-    - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-    - apk update
-    - apk add trivy
     - if [[ $CI_COMMIT_REF_NAME == "master" ]]; then TAG=latest ; else TAG=$CI_COMMIT_REF_NAME ; fi;
     - docker pull $CI_REGISTRY_IMAGE:$TAG
     - sh ./check_docker.sh
