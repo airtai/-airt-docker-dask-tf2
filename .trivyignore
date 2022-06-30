@@ -1,0 +1,1 @@
+DS002 # Rule: Specify at least 1 USER command in Dockerfile with non-root user as argument

@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:2.8.0-gpu-jupyter
+FROM tensorflow/tensorflow:2.8.2-gpu-jupyter
 
 # Token to authenticate for jt
 ARG CI_JOB_TOKEN
@@ -7,6 +7,7 @@ ARG ACCESS_REP_TOKEN
 # needed to suppress tons of debconf messages
 ENV DEBIAN_FRONTEND noninteractive
 
+# make sure we don't upgrade cuda installed by TF because everything t likely ill break
 RUN apt-mark hold cuda-compat-11-2
 
 # needed for TF serving
@@ -16,12 +17,27 @@ RUN echo "deb [arch=amd64] http://storage.googleapis.com/tensorflow-serving-apt 
 # needed for python3.8
 #RUN add-apt-repository ppa:deadsnakes/ppa
 
-RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
-RUN apt update --fix-missing \
-    && apt install --assume-yes --fix-missing --no-install-recommends\
+# RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
+
+# install security updates
+RUN apt update --fix-missing
+RUN apt install --assume-yes unattended-upgrades
+# Enable unattended-upgrades
+RUN dpkg-reconfigure --priority=low unattended-upgrades
+# The above command will create a config file in /etc/apt/apt.conf.d/20auto-upgrades.
+# Printing the contents of the configuration file. 
+# If the configuration for Unattended-Upgrade is "1" then the unattended upgrade will run every 1 day. If the number is "0" then unattended upgrades are disabled.
+RUN cat /etc/apt/apt.conf.d/20auto-upgrades
+# The below command will check and run upgrade only once while building
+RUN unattended-upgrade -d
+
+
+
+RUN apt install --assume-yes --fix-missing --no-install-recommends\
       wget alien libaio-dev libsnappy-dev graphviz vim figlet fish htop tmux cmake libncurses5-dev \
       libncursesw5-dev git zip nano make less sudo \
-      alien libaio-dev firefox-geckodriver build-essential zlib1g-dev ssh-client openssh-client libmysqlclient-dev \
+      alien libaio-dev build-essential zlib1g-dev ssh-client openssh-client libmysqlclient-dev \
+      unattended-upgrades \
     && apt purge --auto-remove && apt clean && rm -rf /var/lib/apt/lists/*
 
 # use Python 3.9 as default
@@ -31,6 +47,10 @@ RUN apt update --fix-missing \
 RUN python3 -V
 RUN pip install --upgrade pip
 #RUN python -m pip install --upgrade pip
+
+# Jupyter notebook has following vulnerability CVE-2022-29238, so manually installing version with fix
+# Please remove once the recent version is included in tensorflow docker image
+RUN pip install notebook==6.4.12
 
 # Install oracle client library
 #RUN wget -O oracle-client-19.9.rpm https://download.oracle.com/otn_software/linux/instantclient/199000/oracle-instantclient19.9-basic-19.9.0.0.0-1.x86_64.rpm \
@@ -43,11 +63,11 @@ RUN pip install --upgrade pip
 #RUN bundle install && rm Gemfile
 
 # customize bash welcome message
-ADD bash.bashrc /etc
+COPY bash.bashrc /etc
 
 # nvtop is locally compiled
 ARG UBUNTU_VERSION
-ADD nvtop-${UBUNTU_VERSION} /usr/local/bin/nvtop
+COPY nvtop-${UBUNTU_VERSION} /usr/local/bin/nvtop
 
 # install requirements
 #RUN conda install --name rapids nb_conda_kernels # pip 
@@ -55,7 +75,7 @@ ADD nvtop-${UBUNTU_VERSION} /usr/local/bin/nvtop
 #RUN source activate rapids && pip install --no-cache-dir setuptools wheel jupyter matplotlib jupyter_http_over_ws ipykernel nbformat
 
 #RUN pip install --no-cache-dir setuptools==58.0.4 wheel six==1.15.0
-ADD top_level_requirements.txt .
+COPY top_level_requirements.txt .
 RUN pip install --no-cache-dir -r top_level_requirements.txt && rm top_level_requirements.txt
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
@@ -66,7 +86,7 @@ RUN if [ -n "$ACCESS_REP_TOKEN" ] ; \
     fi
 
 # customize your jupyter notebook
-ADD airt-neg-trans-small.png /root
+COPY airt-neg-trans-small.png /root
 #ADD infobip-small*.png /root/
 COPY airt_favicons /root/airt_favicons
 RUN jt -t airtd -cellw 90% -N -T --logo /root/airt-neg-trans-small.png --fav_icon_dir /root/airt_favicons
@@ -85,7 +105,7 @@ RUN curl --insecure -L https://get.oh-my.fish > install_omf \
     && ./install_omf --noninteractive \
     && rm install_omf \
     && echo omf install bobthefish | fish
-ADD config.fish /root/.config/fish/config.fish
+COPY config.fish /root/.config/fish/config.fish
 
 
 RUN chmod -R 777 /root
