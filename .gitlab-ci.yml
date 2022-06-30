@@ -20,44 +20,41 @@ stages:
   - check_image
   - trigger_downstream
 
-.install_trivy_template:
-  before_script:
-    - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-    - apk update
-    - apk add trivy
-
 trivy_scan_repo:
-  extends:
-    - .install_trivy_template
   stage: trivy_scan_repo
   script:
+  - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+  - apk update
+  - apk add trivy
   - trivy --version
   - sh ./trivy_scan_repo.sh
 
 docker_build_push:
-  extends:
-    - .install_trivy_template
   stage: build_image
   only:
     - master
     - dev
   script:
+    - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+    - apk update
+    - apk add trivy
     - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME || true
     - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
+    - sh ./check_docker.sh
     - if [ $CI_COMMIT_REF_NAME = "master" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:latest; fi
     - version=$(head -n 1 version.txt)
     - if [ $CI_COMMIT_REF_NAME = "master" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:$version; fi
-    - sh ./check_docker.sh
     - docker push $CI_REGISTRY_IMAGE --all-tags
 
 docker_build:
-  extends:
-    - .install_trivy_template
   stage: build_image
   except:
     - master
     - dev
   script:
+    - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+    - apk update
+    - apk add trivy
     - docker pull $CI_REGISTRY_IMAGE:dev || true
     - docker build --cache-from $CI_REGISTRY_IMAGE:dev --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
     - sh ./check_docker.sh
@@ -68,6 +65,9 @@ docker_image_check:
     - master
     - dev
   script:
+    - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
+    - apk update
+    - apk add trivy
     - if [[ $CI_COMMIT_REF_NAME == "master" ]]; then TAG=latest ; else TAG=$CI_COMMIT_REF_NAME ; fi;
     - docker pull $CI_REGISTRY_IMAGE:$TAG
     - sh ./check_docker.sh
