@@ -40,10 +40,10 @@ docker_build_push:
     - apk add trivy
     - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME || true
     - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
-    - sh ./check_docker.sh
     - if [ $CI_COMMIT_REF_NAME = "master" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:latest; fi
     - version=$(head -n 1 version.txt)
     - if [ $CI_COMMIT_REF_NAME = "master" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:$version; fi
+    - sh ./check_docker.sh
     - docker push $CI_REGISTRY_IMAGE --all-tags
 
 docker_build:
