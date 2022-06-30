@@ -83,4 +83,5 @@ trigger_downstream:
     - apt install --assume-yes curl git
   script:
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/airt.ai/downstream-trigger.git
-    - ./downstream-trigger/downstream.sh https://gitlab.com/api/v4/projects/ $CI_JOB_TOKEN $CI_COMMIT_REF_NAME 29120234
+    - if [[ $CI_COMMIT_REF_NAME == "master" ]]; then TRIGGER_BRANCH=main ; else TRIGGER_BRANCH=$CI_COMMIT_REF_NAME ; fi; # Only for airt-service because there is no master branch, only main branch is in airt-service
+    - ./downstream-trigger/downstream.sh https://gitlab.com/api/v4/projects/ $CI_JOB_TOKEN $TRIGGER_BRANCH 29120234
