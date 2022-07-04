@@ -3,7 +3,7 @@ export BRANCH=$(git branch --show-current)
 
 export AIRT_DOCKER=registry.gitlab.com/airt.ai/airt-docker-dask-tf2
 
-if [ "$BRANCH" == "master" ]
+if [ "$BRANCH" == "main" ]
 then
     export TAG=latest
 else

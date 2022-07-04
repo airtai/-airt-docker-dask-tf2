@@ -3,7 +3,7 @@
 AIRT_DOCKER=registry.gitlab.com/airt.ai/airt-docker-dask-tf2
 
 BRANCH=$(git branch --show-current)
-if [ "$BRANCH" == "master" ]
+if [ "$BRANCH" == "main" ]
 then
     TAG=latest
 elif [ "$BRANCH" == "dev" ]

@@ -1,6 +1,6 @@
 # Airt AI docker with TensorFlow 2.x and Dask
 
-[![pipeline status](https://gitlab.com/airt.ai/airt-docker-dask-tf2/badges/master/pipeline.svg)](https://gitlab.com/airt.ai/airt-docker-dask-tf2/-/commits/master)
+[![pipeline status](https://gitlab.com/airt.ai/airt-docker-dask-tf2/badges/main/pipeline.svg)](https://gitlab.com/airt.ai/airt-docker-dask-tf2/-/commits/main)
 
 Airt AI Docker container with all tools needed for AI projects including TensorFlow 2.1, Dask, Pandas, Numpy etc.
 
