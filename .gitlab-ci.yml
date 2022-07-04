@@ -32,7 +32,7 @@ trivy_scan_repo:
 docker_build_push:
   stage: build_image
   only:
-    - master
+    - main
     - dev
   script:
     - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
@@ -40,16 +40,16 @@ docker_build_push:
     - apk add trivy
     - docker pull $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME || true
     - docker build --cache-from $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME .
-    - if [ $CI_COMMIT_REF_NAME = "master" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:latest; fi
+    - if [ $CI_COMMIT_REF_NAME = "main" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:latest; fi
     - version=$(head -n 1 version.txt)
-    - if [ $CI_COMMIT_REF_NAME = "master" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:$version; fi
+    - if [ $CI_COMMIT_REF_NAME = "main" ]; then docker tag $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_NAME $CI_REGISTRY_IMAGE:$version; fi
     - sh ./check_docker.sh
     - docker push $CI_REGISTRY_IMAGE --all-tags
 
 docker_build:
   stage: build_image
   except:
-    - master
+    - main
     - dev
   script:
     - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
@@ -62,13 +62,13 @@ docker_build:
 docker_image_check:
   stage: check_image
   only:
-    - master
+    - main
     - dev
   script:
     - echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
     - apk update
     - apk add trivy
-    - if [[ $CI_COMMIT_REF_NAME == "master" ]]; then TAG=latest ; else TAG=$CI_COMMIT_REF_NAME ; fi;
+    - if [[ $CI_COMMIT_REF_NAME == "main" ]]; then TAG=latest ; else TAG=$CI_COMMIT_REF_NAME ; fi;
     - docker pull $CI_REGISTRY_IMAGE:$TAG
     - sh ./check_docker.sh
 
@@ -76,12 +76,11 @@ trigger_downstream:
   image: ubuntu:20.04
   stage: trigger_downstream
   only:
-    - master
+    - main
     - dev
   before_script:
     - apt update
     - apt install --assume-yes curl git
   script:
     - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/airt.ai/downstream-trigger.git
-    - if [[ $CI_COMMIT_REF_NAME == "master" ]]; then TRIGGER_BRANCH=main ; else TRIGGER_BRANCH=$CI_COMMIT_REF_NAME ; fi; # Only for airt-service because there is no master branch, only main branch is in airt-service
-    - ./downstream-trigger/downstream.sh https://gitlab.com/api/v4/projects/ $CI_JOB_TOKEN $TRIGGER_BRANCH 29120234
+    - ./downstream-trigger/downstream.sh https://gitlab.com/api/v4/projects/ $CI_JOB_TOKEN $CI_COMMIT_REF_NAME 29120234
