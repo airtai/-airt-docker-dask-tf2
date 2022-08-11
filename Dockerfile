@@ -79,6 +79,9 @@ COPY top_level_requirements.txt .
 RUN pip install --no-cache-dir -r top_level_requirements.txt && rm top_level_requirements.txt
 RUN jupyter serverextension enable --py jupyter_http_over_ws
 
+# Install azure cli
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
 # install jupyter theme with airt theme
 RUN if [ -n "$ACCESS_REP_TOKEN" ] ; \
     then pip install --no-cache-dir git+https://oauth2:${ACCESS_REP_TOKEN}@gitlab.com/airt.ai/jupyter-themes.git ; \
