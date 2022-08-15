@@ -13,13 +13,13 @@
 # dev tools
 awscli==1.22.76 # held back by dvc
 nbdev==1.2.11
-dvc[s3]==2.13.0
-s3fs[boto3]==2022.5.0
+dvc[s3]==2.18.0
+s3fs[boto3]==2022.7.1
 black==22.6.0
 traceback-with-variables==2.0.4
-mypy==0.961
+mypy==0.971
 twine==4.0.1
-keyrings.alt==4.1.0
+keyrings.alt==4.1.1
 uvicorn==0.18.2
 jupyter_contrib_nbextensions
 
