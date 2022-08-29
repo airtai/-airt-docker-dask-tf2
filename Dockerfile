@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:2.8.2-gpu-jupyter
+FROM tensorflow/tensorflow:2.9.1-gpu-jupyter
 
 # Token to authenticate for jt
 ARG CI_JOB_TOKEN
@@ -78,6 +78,9 @@ COPY nvtop-${UBUNTU_VERSION} /usr/local/bin/nvtop
 COPY top_level_requirements.txt .
 RUN pip install --no-cache-dir -r top_level_requirements.txt && rm top_level_requirements.txt
 RUN jupyter serverextension enable --py jupyter_http_over_ws
+
+# Install azure cli
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 # install jupyter theme with airt theme
 RUN if [ -n "$ACCESS_REP_TOKEN" ] ; \
