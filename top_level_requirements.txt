@@ -11,16 +11,16 @@
 #nbformat==5.1.3 # Not sure who needs it
 
 # dev tools
-awscli==1.22.76 # held back by dvc
+awscli==1.25.60 # held back by dvc
 nbdev==1.2.11
-dvc[s3]==2.18.0
-s3fs[boto3]==2022.7.1
-black==22.6.0
+dvc[s3]==2.24.0
+s3fs[boto3]==2022.8.2
+black==22.8.0
 traceback-with-variables==2.0.4
 mypy==0.971
 twine==4.0.1
-keyrings.alt==4.1.1
-uvicorn==0.18.2
+keyrings.alt==4.2.0
+uvicorn==0.18.3
 jupyter_contrib_nbextensions
 
 # needed for MkDocs => remove me with a new version of tf
