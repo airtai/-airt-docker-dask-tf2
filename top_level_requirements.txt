@@ -23,6 +23,13 @@ keyrings.alt==4.2.0
 uvicorn==0.18.3
 jupyter_contrib_nbextensions
 
+# ToDo: Following is a fix for vulnerability https://avd.aquasec.com/nvd/2022/cve-2022-1941/
+# Remove it once it is fixed in base tensorflow docker
+protobuf>=3.19.5
+
+# ToDo: Following is a fix for vulnerability https://avd.aquasec.com/nvd/2022/cve-2022-36087/
+oauthlib>=3.2.1
+
 # needed for MkDocs => remove me with a new version of tf
 Pygments==2.12.0
 
