@@ -39,18 +39,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - run: echo "UBUNTU_VERSION=20.04" >> $GITHUB_ENV
+      - run: apt update
+      - run: apt install trivy
+      - run: docker pull ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME || true
+      - run: docker build --cache-from $ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME .
+      - run: if [ $GITHUB_REF_NAME = "main" ]; then docker tag $ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME $ghcr.io/$GITHUB_REPOSITORY:latest; fi
+      - run: version=$(head -n 1 version.txt)
+      - run: if [ $GITHUB_REF_NAME = "main" ]; then docker tag $ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME $ghcr.io/$GITHUB_REPOSITORY:$version; fi
+      - run: sh ./check_docker.sh
+      - run: docker push $ghcr.io/$GITHUB_REPOSITORY --all-tags
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
