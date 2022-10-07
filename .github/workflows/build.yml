@@ -16,10 +16,11 @@ jobs:
       - run: apk update
       - run: apk add make
       - run: trivy --version
-      - run: sh ./scripts/trivy_scan_repo.sh
+      - run: sh ./trivy_scan_repo.sh
 
   build:
     runs-on: ubuntu-20.04
+    needs: trivy
     steps:
       - uses: actions/checkout@v3
       - run: echo "PATH=$PATH:/root/.local/bin" >> $GITHUB_ENV
