@@ -1,0 +1,26 @@
+name: Build docker
+on:
+  push:
+    branches:
+      - master
+      - dev
+      - update-actions
+
+jobs:
+  trivy:
+    runs-on: ubuntu-20.04
+    container:
+      image: docker.io/aquasec/trivy:latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: apk update
+      - run: apk add make
+      - run: trivy --version
+      - run: sh ./scripts/trivy_scan_repo.sh
+
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "PATH=$PATH:/root/.local/bin" >> $GITHUB_ENV
+      - run: echo $GITHUB_ENV
