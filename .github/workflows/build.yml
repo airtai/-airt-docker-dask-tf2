@@ -40,7 +40,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - run: sudo apt update
-      - run: sudo apt install -y trivy
+      - run: wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.deb
+      - run: sudo dpkg -i trivy_0.18.3_Linux-64bit.deb
       - run: docker pull ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME || true
       - run: docker build --cache-from $ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME --build-arg CI_JOB_TOKEN --build-arg UBUNTU_VERSION=20.04 -t $ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME .
       - run: if [ $GITHUB_REF_NAME = "main" ]; then docker tag $ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME $ghcr.io/$GITHUB_REPOSITORY:latest; fi
