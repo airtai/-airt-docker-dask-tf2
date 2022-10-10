@@ -1,17 +1,12 @@
-name: Build docker
-on:
-  push:
-    branches:
-      - master
-      - dev
-      - update-actions
+name: Trivy Scan and Build Docker
+on: [push]
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  trivy:
+  trivy_scan_repo:
     runs-on: ubuntu-20.04
     container:
       image: docker.io/aquasec/trivy:latest
@@ -22,9 +17,9 @@ jobs:
       - run: trivy --version
       - run: sh ./trivy_scan_repo.sh
 
-  build:
+  docker_build_push:
     runs-on: ubuntu-20.04
-    needs: trivy
+    needs: trivy_scan_repo
     permissions:
       contents: read
       packages: write
@@ -42,10 +37,38 @@ jobs:
       - run: sudo apt update
       - run: wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.deb
       - run: sudo dpkg -i trivy_0.18.3_Linux-64bit.deb
-      - run: docker pull ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME || true
+      - run: docker pull ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME || docker pull ghcr.io/$GITHUB_REPOSITORY:dev || true
       - run: docker build --cache-from ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME --build-arg UBUNTU_VERSION=20.04 -t ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME .
       - run: if [ $GITHUB_REF_NAME = "main" ]; then docker tag ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME ghcr.io/$GITHUB_REPOSITORY:latest; fi
       - run: version=$(head -n 1 version.txt)
       - run: if [ $GITHUB_REF_NAME = "main" ]; then docker tag ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME ghcr.io/$GITHUB_REPOSITORY:$version; fi
       - run: sh ./check_docker.sh
-      - run: docker push ghcr.io/$GITHUB_REPOSITORY --all-tags
+
+      - name: Push only if branch name is main or dev
+        if: github.head_ref == "main" || github.head_ref == "dev" || github.head_ref == "update-actions"
+        run: docker push ghcr.io/$GITHUB_REPOSITORY --all-tags
+
+  docker_image_check:
+    runs-on: ubuntu-20.04
+    needs: [trivy, docker_build_push]
+    if: github.head_ref == "main" || github.head_ref == "dev" || github.head_ref == "update-actions"
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: sudo apt update
+      - run: wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.deb
+      - run: sudo dpkg -i trivy_0.18.3_Linux-64bit.deb
+      - run: if [[ $GITHUB_REF_NAME == "main" ]]; then TAG=latest ; else TAG=$GITHUB_REF_NAME ; fi;
+      - run: docker pull ghcr.io/$GITHUB_REPOSITORY:$TAG
+      - run: sh ./check_docker.sh
