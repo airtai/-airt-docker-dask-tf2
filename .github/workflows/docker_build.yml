@@ -45,13 +45,13 @@ jobs:
       - run: sh ./check_docker.sh
 
       - name: Push only if branch name is main or dev
-        if: github.ref_name == "main" || github.ref_name == "dev" || github.ref_name == "update-actions"
+        if: github.ref_name == 'main' || github.ref_name == 'dev' || github.ref_name == 'update-actions'
         run: docker push ghcr.io/$GITHUB_REPOSITORY --all-tags
 
   docker_image_check:
     runs-on: ubuntu-20.04
     needs: [trivy, docker_build_push]
-    if: github.ref_name == "main" || github.ref_name == "dev" || github.ref_name == "update-actions"
+    if: github.ref_name == 'main' || github.ref_name == 'dev' || github.ref_name == 'update-actions'
     permissions:
       contents: read
       packages: read
