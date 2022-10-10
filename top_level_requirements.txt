@@ -12,11 +12,11 @@
 
 # dev tools
 awscli==1.25.60 # held back by dvc
-nbdev==1.2.11
+nbdev==2.3.7
 dvc[s3]==2.24.0
 s3fs[boto3]==2022.8.2
 black==22.8.0
-traceback-with-variables==2.0.4
+#traceback-with-variables==2.0.4 # no need => move to build_and_test_requirments.txt if needed
 mypy==0.971
 twine==4.0.1
 keyrings.alt==4.2.0
