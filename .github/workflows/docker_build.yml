@@ -50,7 +50,7 @@ jobs:
 
   docker_image_check:
     runs-on: ubuntu-20.04
-    needs: [trivy, docker_build_push]
+    needs: [trivy_scan_repo, docker_build_push]
     if: github.ref_name == 'main' || github.ref_name == 'dev' || github.ref_name == 'update-actions'
     permissions:
       contents: read
