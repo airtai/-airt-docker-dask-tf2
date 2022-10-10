@@ -70,5 +70,5 @@ jobs:
       - run: wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.deb
       - run: sudo dpkg -i trivy_0.18.3_Linux-64bit.deb
       - run: if [[ $GITHUB_REF_NAME == "main" ]]; then TAG=latest ; else TAG=$GITHUB_REF_NAME ; fi;
-      - run: docker pull ghcr.io/$GITHUB_REPOSITORY:$TAG
+      - run: docker pull ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME
       - run: sh ./check_docker.sh
