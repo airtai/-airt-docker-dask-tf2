@@ -1,9 +1,5 @@
 FROM tensorflow/tensorflow:2.10.0-gpu-jupyter
 
-# Token to authenticate for jt
-ARG CI_JOB_TOKEN
-ARG ACCESS_REP_TOKEN
-
 # needed to suppress tons of debconf messages
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -83,10 +79,7 @@ RUN jupyter serverextension enable --py jupyter_http_over_ws
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 # install jupyter theme with airt theme
-RUN if [ -n "$ACCESS_REP_TOKEN" ] ; \
-    then pip install --no-cache-dir git+https://oauth2:${ACCESS_REP_TOKEN}@gitlab.com/airt.ai/jupyter-themes.git ; \
-    else pip install --no-cache-dir git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/airt.ai/jupyter-themes.git ; \
-    fi
+RUN pip install --no-cache-dir git+https://github.com/airtai/jupyter-themes.git
 
 # customize your jupyter notebook
 COPY airt-neg-trans-small.png /root
