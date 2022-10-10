@@ -1,9 +1,5 @@
 FROM tensorflow/tensorflow:2.10.0-gpu-jupyter
 
-# Token to authenticate for jt
-ARG CI_JOB_TOKEN
-ARG ACCESS_REP_TOKEN
-
 # needed to suppress tons of debconf messages
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -82,18 +78,15 @@ RUN jupyter serverextension enable --py jupyter_http_over_ws
 # Install azure cli
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
-# # install jupyter theme with airt theme
-# RUN if [ -n "$ACCESS_REP_TOKEN" ] ; \
-#     then pip install --no-cache-dir git+https://oauth2:${ACCESS_REP_TOKEN}@gitlab.com/airt.ai/jupyter-themes.git ; \
-#     else pip install --no-cache-dir git+https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/airt.ai/jupyter-themes.git ; \
-#     fi
+# install jupyter theme with airt theme
+RUN pip install --no-cache-dir git+https://github.com/airtai/jupyter-themes.git
 
-# # customize your jupyter notebook
-# COPY airt-neg-trans-small.png /root
-# #ADD infobip-small*.png /root/
-# COPY airt_favicons /root/airt_favicons
-# RUN jt -t airtd -cellw 90% -N -T --logo /root/airt-neg-trans-small.png --fav_icon_dir /root/airt_favicons
-# RUN rm -rf /root/airt-neg-trans-small.png /root/airt_favicons
+# customize your jupyter notebook
+COPY airt-neg-trans-small.png /root
+#ADD infobip-small*.png /root/
+COPY airt_favicons /root/airt_favicons
+RUN jt -t airtd -cellw 90% -N -T --logo /root/airt-neg-trans-small.png --fav_icon_dir /root/airt_favicons
+RUN rm -rf /root/airt-neg-trans-small.png /root/airt_favicons
 
 # Install and enable black python formatter for notebooks
 RUN jupyter nbextension install https://github.com/drillan/jupyter-black/archive/master.zip \
