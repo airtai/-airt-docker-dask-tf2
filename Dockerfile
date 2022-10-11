@@ -26,7 +26,8 @@ RUN dpkg-reconfigure --priority=low unattended-upgrades
 RUN cat /etc/apt/apt.conf.d/20auto-upgrades
 # The below command will check and run upgrade only once while building
 RUN unattended-upgrade -d
-
+# ToDo: Remove once CVE-2021-4159 is fixed in linux-libc-dev
+RUN apt install --only-upgrade -y linux-libc-dev
 
 
 RUN apt install --assume-yes --fix-missing --no-install-recommends\
