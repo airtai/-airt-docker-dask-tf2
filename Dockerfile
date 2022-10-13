@@ -25,9 +25,7 @@ RUN dpkg-reconfigure --priority=low unattended-upgrades
 # If the configuration for Unattended-Upgrade is "1" then the unattended upgrade will run every 1 day. If the number is "0" then unattended upgrades are disabled.
 RUN cat /etc/apt/apt.conf.d/20auto-upgrades
 # The below command will check and run upgrade only once while building
-RUN unattended-upgrade -d
-# ToDo: Remove once CVE-2021-4159 is fixed in linux-libc-dev
-RUN apt install --only-upgrade -y linux-libc-dev
+RUN unattended-upgrade -d -v
 
 
 RUN apt install --assume-yes --fix-missing --no-install-recommends\
