@@ -17,7 +17,7 @@ RUN apt-mark hold cuda-compat-11-2
 
 # install security updates
 RUN apt update --fix-missing
-RUN apt install --assume-yes unattended-upgrades
+RUN apt update && apt install --assume-yes unattended-upgrades
 # Enable unattended-upgrades
 RUN dpkg-reconfigure --priority=low unattended-upgrades
 # The above command will create a config file in /etc/apt/apt.conf.d/20auto-upgrades.
