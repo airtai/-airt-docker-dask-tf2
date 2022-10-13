@@ -16,7 +16,6 @@ RUN apt-mark hold cuda-compat-11-2
 # RUN rm /etc/apt/sources.list.d/cuda.list && rm /etc/apt/sources.list.d/nvidia-ml.list
 
 # install security updates
-RUN apt update 
 RUN apt update --fix-missing
 RUN apt install --assume-yes unattended-upgrades
 # Enable unattended-upgrades
