@@ -25,7 +25,7 @@ jupyter_contrib_nbextensions
 
 # ToDo: Following is a fix for vulnerability https://avd.aquasec.com/nvd/2022/cve-2022-1941/
 # Remove it once it is fixed in base tensorflow docker
-protobuf>=3.19.5
+protobuf>=3.19.5,<3.20
 
 # ToDo: Following is a fix for vulnerability https://avd.aquasec.com/nvd/2022/cve-2022-36087/
 oauthlib>=3.2.1
