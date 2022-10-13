@@ -43,7 +43,7 @@ jobs:
         if: github.ref_name == 'main' || github.ref_name == 'dev'
         run: docker build --cache-from ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME --build-arg UBUNTU_VERSION=20.04 -t ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME .
       - name: Build with dev as cache for rest of the branches
-        if: github.ref_name == 'main' || github.ref_name == 'dev'
+        if: github.ref_name != 'main' || github.ref_name != 'dev'
         run: docker build --cache-from ghcr.io/$GITHUB_REPOSITORY:dev --build-arg UBUNTU_VERSION=20.04 -t ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME .
 
       - run: if [ $GITHUB_REF_NAME = "main" ]; then docker tag ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME ghcr.io/$GITHUB_REPOSITORY:latest; fi
