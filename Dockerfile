@@ -17,7 +17,7 @@ RUN apt-mark hold cuda-compat-11-2
 
 # install security updates
 RUN apt update --fix-missing
-RUN apt update && apt install --assume-yes unattended-upgrades
+RUN apt update -y && apt install --assume-yes unattended-upgrades
 # Enable unattended-upgrades
 RUN dpkg-reconfigure --priority=low unattended-upgrades
 # The above command will create a config file in /etc/apt/apt.conf.d/20auto-upgrades.
@@ -25,7 +25,7 @@ RUN dpkg-reconfigure --priority=low unattended-upgrades
 # If the configuration for Unattended-Upgrade is "1" then the unattended upgrade will run every 1 day. If the number is "0" then unattended upgrades are disabled.
 RUN cat /etc/apt/apt.conf.d/20auto-upgrades
 # The below command will check and run upgrade only once while building
-RUN unattended-upgrade --debug
+RUN unattended-upgrade -d
 
 
 RUN apt install --assume-yes --fix-missing --no-install-recommends\
@@ -42,10 +42,6 @@ RUN apt install --assume-yes --fix-missing --no-install-recommends\
 RUN python3 -V
 RUN pip install --upgrade pip
 #RUN python -m pip install --upgrade pip
-
-# Jupyter notebook has following vulnerability CVE-2022-29238, so manually installing version with fix
-# Please remove once the recent version is included in tensorflow docker image
-RUN pip install notebook==6.4.12
 
 # Install oracle client library
 #RUN wget -O oracle-client-19.9.rpm https://download.oracle.com/otn_software/linux/instantclient/199000/oracle-instantclient19.9-basic-19.9.0.0.0-1.x86_64.rpm \
@@ -76,6 +72,13 @@ RUN jupyter serverextension enable --py jupyter_http_over_ws
 
 # Install azure cli
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
+# Install trivy
+RUN wget https://github.com/aquasecurity/trivy/releases/download/v0.32.1/trivy_0.32.1_Linux-64bit.deb && \
+    dpkg -i  trivy_0.32.1_Linux-64bit.deb && rm trivy_0.32.1_Linux-64bit.deb
+
+# Install git secret scanners
+RUN git clone https://github.com/awslabs/git-secrets.git && cd git-secrets && make install && cd ../ && rm -rf git-secrets
 
 # install jupyter theme with airt theme
 RUN pip install --no-cache-dir git+https://github.com/airtai/jupyter-themes.git
