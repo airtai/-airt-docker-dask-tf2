@@ -12,26 +12,26 @@
 
 # dev tools
 awscli==1.25.60 # held back by dvc
-nbdev==2.3.7
+nbdev==2.3.9
 dvc[s3]==2.24.0
 s3fs[boto3]==2022.8.2
-black==22.8.0
+black==22.10.0
 #traceback-with-variables==2.0.4 # no need => move to build_and_test_requirments.txt if needed
-mypy==0.971
+mypy==0.991
 twine==4.0.1
 keyrings.alt==4.2.0
-uvicorn==0.18.3
+uvicorn==0.20.0
 jupyter_contrib_nbextensions
 
 # ToDo: Following is a fix for vulnerability https://avd.aquasec.com/nvd/2022/cve-2022-1941/
 # Remove it once it is fixed in base tensorflow docker
-protobuf>=3.19.5
+# protobuf>=3.19.5
 
 # ToDo: Following is a fix for vulnerability https://avd.aquasec.com/nvd/2022/cve-2022-36087/
-oauthlib>=3.2.1
+# oauthlib>=3.2.1
 
 # needed for MkDocs => remove me with a new version of tf
-Pygments==2.12.0
+# Pygments==2.12.0
 
 #trivy req
-Pillow==9.2.0
+Pillow==9.3.0

@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:2.10.0-gpu-jupyter
+FROM tensorflow/tensorflow:2.10.1-gpu-jupyter
 
 # needed to suppress tons of debconf messages
 ENV DEBIAN_FRONTEND noninteractive
