@@ -3,3 +3,9 @@ DS002
 
 # Dependency of notebook is having a vulnerability - https://avd.aquasec.com/nvd/2022/cve-2022-34749/. Ignoring it because of not being exposed to internet.
 CVE-2022-34749
+
+# Ignore using cd in Dockerfile - https://avd.aquasec.com/misconfig/dockerfile/general/avd-ds-0013/
+AVD-DS-0013
+
+# Ignore using both curl and wget - https://avd.aquasec.com/misconfig/dockerfile/general/avd-ds-0014/
+AVD-DS-0014

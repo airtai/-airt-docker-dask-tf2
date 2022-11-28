@@ -14,7 +14,7 @@
 awscli==1.25.60 # held back by dvc
 nbdev==2.3.9
 dvc[s3]==2.24.0
-s3fs[boto3]==2022.8.2
+s3fs[boto3]==2022.10.0
 black==22.10.0
 #traceback-with-variables==2.0.4 # no need => move to build_and_test_requirments.txt if needed
 mypy==0.991
@@ -22,13 +22,22 @@ twine==4.0.1
 keyrings.alt==4.2.0
 uvicorn==0.20.0
 jupyter_contrib_nbextensions
+pre-commit==2.20.0
+detect-secrets==1.4.0
 
 # ToDo: Following is a fix for vulnerability https://avd.aquasec.com/nvd/2022/cve-2022-1941/
 # Remove it once it is fixed in base tensorflow docker
-# protobuf>=3.19.5
+protobuf>=3.19.5,<3.20
 
 # ToDo: Following is a fix for vulnerability https://avd.aquasec.com/nvd/2022/cve-2022-36087/
 # oauthlib>=3.2.1
+
+# Jupyter notebook has following vulnerability CVE-2022-29238, so manually installing version with fix
+# Please remove once the recent version is included in tensorflow docker image
+notebook==6.5.1
+
+# To fix following vulnerability - https://avd.aquasec.com/nvd/cve-2022-39286. Remove once notebook is updated
+jupyter-core>=4.11.2
 
 # needed for MkDocs => remove me with a new version of tf
 # Pygments==2.12.0
