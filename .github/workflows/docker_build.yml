@@ -63,6 +63,7 @@ jobs:
       - run: if [ $GITHUB_REF_NAME = "main" ]; then docker tag ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME ghcr.io/$GITHUB_REPOSITORY:latest; fi
       - run: echo "version=$(head -n 1 version.txt)" >> $GITHUB_ENV
       - run: if [ $GITHUB_REF_NAME = "main" ]; then docker tag ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME ghcr.io/$GITHUB_REPOSITORY:$version; fi
+      - run: docker system prune -f || echo 'No images to delete'
       - run: sh ./check_docker.sh
 
       - name: Push only if branch name is main or dev
