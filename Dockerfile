@@ -134,3 +134,7 @@ CMD ["/usr/bin/fish", "-c", "jupyter notebook --notebook-dir=/tf --ip 0.0.0.0 --
 
 RUN chmod -R 777 /root/.config
 
+RUN wget https://www.quarto.org/download/latest/quarto-linux-amd64.deb
+RUN dpkg -i quarto-linux-amd64.deb && rm quarto-linux-amd64.deb
+
+
