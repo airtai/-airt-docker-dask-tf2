@@ -11,6 +11,7 @@ else
 fi
 
 echo Building $AIRT_DOCKER
-docker build --build-arg UBUNTU_VERSION=20.04 --cache-from $AIRT_DOCKER:$TAG -t $AIRT_DOCKER:`date -u +%Y.%m.%d-%H.%M.%S` -t $AIRT_DOCKER:$TAG .
+# docker build --build-arg UBUNTU_VERSION=20.04 --cache-from $AIRT_DOCKER:$TAG -t $AIRT_DOCKER:`date -u +%Y.%m.%d-%H.%M.%S` -t $AIRT_DOCKER:$TAG .
+docker build --build-arg UBUNTU_VERSION=20.04 -t $AIRT_DOCKER:`date -u +%Y.%m.%d-%H.%M.%S` -t $AIRT_DOCKER:$TAG .
 
 ./check_docker.sh
